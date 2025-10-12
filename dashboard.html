@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Dashboard - Agrinhouse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=SF+Pro+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --header-bg: rgba(0, 0, 0, 0.3);
+      --header-text: #ffffff;
+      --body-bg: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"%3E%3Cdefs%3E%3CradialGradient id="bg" cx="50%" cy="50%" r="50%"%3E%3Cstop offset="0%" style="stop-color:%231a1a3d;stop-opacity:1"/%3E%3Cstop offset="100%" style="stop-color:%232a2a6e;stop-opacity:1"/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width="100%" height="100%" fill="url(%23bg)"/%3E%3C/svg%3E');
+      --text-color: #ffffff;
+      --grid-item-bg: rgba(255, 255, 255, 0.05);
+      --grid-item-text: #ffffff;
+      --grid-item-icon: #d1d5db;
+      --modal-bg: rgba(20, 20, 20, 0.95);
+      --modal-text: #ffffff;
+      --modal-overlay-bg: rgba(0, 0, 0, 0.5);
+      --btn-primary-bg: linear-gradient(45deg, #0078d4, #00b4ff);
+      --btn-primary-hover-bg: linear-gradient(45deg, #005ea2, #0098db);
+      --btn-success-bg: linear-gradient(45deg, #2ea043, #4caf50);
+      --btn-success-hover-bg: linear-gradient(45deg, #257d36, #388e3c);
+      --card-bg: rgba(255, 255, 255, 0.15);
+      --file-item-bg: rgba(255, 255, 255, 0.05);
+      --ticket-item-bg: rgba(255, 255, 255, 0.05);
+      --ticket-form-bg: rgba(255, 255, 255, 0.05);
+      --ticket-form-textarea-bg: rgba(255, 255, 255, 0.05);
+      --ticket-form-textarea-border: rgba(255, 255, 255, 0.2);
+      --ticket-message-response: #d1d5db;
+      --sidebar-bg: rgba(30, 58, 138, 0.6);
+      --sidebar-item-text: #e2e8f0;
+      --sidebar-item-hover-bg: rgba(255, 255, 255, 0.15);
+      --sidebar-item-active-bg: #3b82f6;
+      --avatar-bg: linear-gradient(45deg, #0078d4, #00b4ff);
+      --avatar-hover-shadow: rgba(0, 120, 212, 0.5);
+      --logout-icon: #ffffff;
+      --logout-icon-hover: #00b4ff;
+      --lock-message-bg: rgba(255, 255, 255, 0.1);
+      --lock-message-text: #ffffff;
+    }
+    body.theme-light {
+      --header-bg: rgba(255, 255, 255, 0.9);
+      --header-text: #1f2a44;
+      --body-bg: linear-gradient(180deg, #e5e7eb 0%, #d1d5db 100%);
+      --text-color: #1f2a44;
+      --grid-item-bg: rgba(255, 255, 255, 0.9);
+      --grid-item-text: #1f2a44;
+      --grid-item-icon: #4b5563;
+      --modal-bg: rgba(255, 255, 255, 0.95);
+      --modal-text: #1f2a44;
+      --modal-overlay-bg: rgba(0, 0, 0, 0.4);
+      --btn-primary-bg: linear-gradient(45deg, #0052cc, #2684ff);
+      --btn-primary-hover-bg: linear-gradient(45deg, #003d99, #1e66cc);
+      --btn-success-bg: linear-gradient(45deg, #15803d, #22c55e);
+      --btn-success-hover-bg: linear-gradient(45deg, #166534, #16a34a);
+      --card-bg: rgba(255, 255, 255, 0.95);
+      --file-item-bg: rgba(255, 255, 255, 0.9);
+      --ticket-item-bg: rgba(255, 255, 255, 0.9);
+      --ticket-form-bg: rgba(255, 255, 255, 0.9);
+      --ticket-form-textarea-bg: rgba(255, 255, 255, 0.95);
+      --ticket-form-textarea-border: rgba(0, 0, 0, 0.1);
+      --ticket-message-response: #6b7280;
+      --sidebar-bg: rgba(255, 255, 255, 0.9);
+      --sidebar-item-text: #1f2a44;
+      --sidebar-item-hover-bg: rgba(38, 132, 255, 0.1);
+      --sidebar-item-active-bg: #2684ff;
+      --avatar-bg: linear-gradient(45deg, #0052cc, #2684ff);
+      --avatar-hover-shadow: rgba(38, 132, 255, 0.3);
+      --logout-icon: #1f2a44;
+      --logout-icon-hover: #2684ff;
+      --lock-message-bg: rgba(0, 0, 0, 0.05);
+      --lock-message-text: #1f2a44;
+    }
+    body {
+      font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--body-bg);
+      background-size: cover;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      touch-action: manipulation;
+    }
+    .lock-message {
+      background: var(--lock-message-bg);
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      color: var(--lock-message-text);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin: 16px;
+    }
+    .lock-message h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .lock-message p {
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+    .lock-message a {
+      color: #2684ff;
+      font-weight: 500;
+      text-decoration: underline;
+      transition: color 0.2s ease;
+    }
+    .lock-message a:hover {
+      color: #4c8bf5;
+    }
+    .header {
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      position: fixed;
+      top: env(safe-area-inset-top);
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .header .title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--header-text);
+      letter-spacing: -0.01em;
+    }
+    .header .user-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header .user-section .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--avatar-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .header .user-section .avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 6px var(--avatar-hover-shadow);
+    }
+    .header .user-section .logout-icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--logout-icon);
+      cursor: pointer;
+      transition: transform 0.2s ease, stroke 0.2s ease;
+    }
+    .header .user-section .logout-icon:hover {
+      transform: scale(1.05);
+      stroke: var(--logout-icon-hover);
+    }
+    .home-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 12px;
+      padding: calc(72px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+    .grid-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      border-radius: 10px;
+      background: var(--grid-item-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .grid-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .grid-item svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--grid-item-icon);
+      stroke-width: 1.5;
+      margin-bottom: 8px;
+    }
+    .grid-item span {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--grid-item-text);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--modal-overlay-bg);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 2000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+    .modal {
+      background: var(--modal-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      width: 100%;
+      max-width: 640px;
+      height: calc(100% - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      margin: env(safe-area-inset-top) auto 0;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-out;
+    }
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--modal-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: env(safe-area-inset-top);
+      z-index: 2100;
+    }
+    .modal-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--modal-text);
+      letter-spacing: -0.01em;
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #2684ff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    .back-btn:hover {
+      color: #4c8bf5;
+      transform: translateX(-2px);
+    }
+    .back-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+    .modal-content {
+      padding: 16px;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
+      color: var(--modal-text);
+      height: calc(100% - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 8px;
+      background: var(--card-bg);
+    }
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .btn-primary:hover {
+      transform: scale(1.02);
+      background: var(--btn-primary-hover-bg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .btn-success {
+      background: var(--btn-success-bg);
+      color: #ffffff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .btn-success:hover {
+      transform: scale(1.02);
+      background: var(--btn-success-hover-bg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .file-item {
+      background: var(--file-item-bg);
+      border-radius: 10px;
+      padding: 12px;
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      margin-bottom: 8px;
+    }
+    .file-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .ticket-item {
+      background: var(--ticket-item-bg);
+      border-radius: 10px;
+      padding: 12px;
+      border-left: 4px solid transparent;
+      transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      margin-bottom: 8px;
+    }
+    .ticket-item.user {
+      border-left-color: #2684ff;
+    }
+    .ticket-item.admin {
+      border-left-color: #6b7280;
+    }
+    .ticket-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .ticket-form-container {
+      background: var(--ticket-form-bg);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .ticket-form-container textarea {
+      background: var(--ticket-form-textarea-bg);
+      border: 1px solid var(--ticket-form-textarea-border);
+      border-radius: 8px;
+      padding: 8px;
+      color: var(--text-color);
+      font-size: 0.875rem;
+      resize: none;
+      width: 100%;
+      height: 80px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      margin-bottom: 8px;
+    }
+    .ticket-form-container textarea:focus {
+      border-color: #2684ff;
+      box-shadow: 0 0 4px rgba(38, 132, 255, 0.3);
+      outline: none;
+    }
+    .ticket-message-response {
+      font-size: 0.75rem;
+      color: var(--ticket-message-response);
+      margin-top: 6px;
+    }
+    .main-content {
+      margin-top: calc(56px + env(safe-area-inset-top));
+      padding: 0;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    .main-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    .main-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .main-content::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+    .main-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+    .sidebar {
+      display: none;
+    }
+    .content-section {
+      display: none;
+      height: 100%;
+      width: 100%;
+    }
+    .content-section.active {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      height: 100%;
+      width: 100%;
+    }
+    .card-content {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .card-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      overflow: auto;
+      box-sizing: border-box;
+    }
+    .section-divider {
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      margin: 16px 0;
+    }
+    @media (min-width: 769px) {
+      body {
+        overflow: hidden;
+      }
+      .header {
+        height: 64px;
+        padding: 0 24px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      .header .title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .header .user-section .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        font-size: 1rem;
+      }
+      .header .user-section .logout-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .header .user-section .logout-icon:hover {
+        transform: scale(1.1);
+      }
+      .home-grid, .modal-overlay {
+        display: none !important;
+      }
+      .sidebar {
+        display: block;
+        background: var(--sidebar-bg);
+        backdrop-filter: blur(12px);
+        width: 80px;
+        position: fixed;
+        top: 64px;
+        bottom: 0;
+        padding: 16px 8px;
+        transition: width 0.3s ease, transform 0.3s ease;
+        z-index: 900;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+      .sidebar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+      }
+      .sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .sidebar:hover {
+        width: 240px;
+      }
+      .sidebar:hover .sidebar-item span {
+        opacity: 1;
+        visibility: visible;
+      }
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--sidebar-item-text);
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease;
+        margin-bottom: 6px;
+        white-space: nowrap;
+      }
+      .sidebar-item:hover {
+        background: var(--sidebar-item-hover-bg);
+      }
+      .sidebar-item.active {
+        background: var(--sidebar-item-active-bg);
+        color: #ffffff;
+      }
+      .sidebar-item svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        flex-shrink: 0;
+        margin-left: 8px;
+      }
+      .sidebar-item span {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      .sidebar-item:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 80px;
+        background: rgba(31, 42, 68, 0.9);
+        color: #ffffff;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        z-index: 1000;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .sidebar:hover .sidebar-item::after {
+        display: none;
+      }
+      .main-content {
+        margin-left: 80px;
+        margin-top: 64px;
+        padding: 0;
+        height: calc(100vh - 64px);
+        width: calc(100vw - 80px);
+        transition: margin-left 0.3s ease;
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+      .content-section {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+      }
+      .content-section.active {
+        display: flex;
+        height: 100%;
+        width: 100%;
+      }
+      .card-content > *:not(iframe) {
+        padding: 24px;
+        overflow-y: auto;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      .btn-primary {
+        border-radius: 8px;
+        padding: 10px 20px;
+      }
+      .btn-success {
+        border-radius: 8px;
+        padding: 10px 20px;
+      }
+      .file-item {
+        padding: 16px;
+      }
+      .file-item:hover {
+        transform: translateY(-2px);
+      }
+      .ticket-item {
+        padding: 16px;
+      }
+      .ticket-item:hover {
+        transform: translateY(-2px);
+      }
+      .ticket-form-container {
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .ticket-form-container textarea {
+        padding: 12px;
+        resize: vertical;
+        height: 100px;
+      }
+      .ticket-message-response {
+        font-size: 0.875rem;
+        margin-top: 8px;
+      }
+    }
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      .sidebar { width: 64px; }
+      .sidebar:hover { width: 200px; }
+      .main-content { 
+        margin-left: 64px; 
+        width: calc(100vw - 64px);
+      }
+    }
+    @media (max-width: 768px) {
+      .header .hamburger { display: block; cursor: pointer; position: absolute; left: 12px; width: 24px; height: 24px; }
+      .header .title { margin-left: 40px; }
+      .header .user-section { gap: 8px; }
+      .header .user-section .avatar { width: 28px; height: 28px; font-size: 0.75rem; }
+      .header .user-section .logout-icon { width: 18px; height: 18px; }
+      .sidebar { width: 0; transform: translateX(-100%); }
+      .sidebar.active { width: 200px; transform: translateX(0); }
+      .main-content { 
+        margin-left: 0; 
+        width: 100vw;
+        height: calc(100vh - 56px - env(safe-area-inset-top));
+      }
+      .content-section { display: none !important; }
+    }
+    @media (max-width: 360px) {
+      .header { height: 48px; padding: 0 8px; }
+      .header .title { font-size: 0.875rem; margin-left: 36px; }
+      .header .user-section { gap: 4px; }
+      .header .user-section .avatar { width: 24px; height: 24px; font-size: 0.625rem; }
+      .header .user-section .logout-icon { width: 16px; height: 16px; }
+      .home-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: calc(56px + env(safe-area-inset-top)) 8px calc(12px + env(safe-area-inset-bottom));
+      }
+      .grid-item { padding: 8px; border-radius: 8px; }
+      .grid-item svg { width: 24px; height: 24px; }
+      .grid-item span { font-size: 0.625rem; }
+      .modal-content { padding: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+      .btn-primary, .btn-success { padding: 8px 12px; font-size: 0.75rem; border-radius: 6px; }
+      .ticket-form-container textarea { height: 60px; }
+    }
+  </style>
+</head>
+<body class="theme-dark">
+  <header class="header">
+    <svg class="hamburger w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+    <div class="title">Dashboard - Agrinhouse</div>
+    <div class="user-section">
+      <span id="user-name" class="text-sm font-medium"></span>
+      <div class="avatar" id="user-avatar"></div>
+      <svg id="logout-btn" class="logout-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+    </div>
+  </header>
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-item active" onclick="switchSection('document-support-hub')" data-tooltip="Document & Support Hub">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      <span>Document & Support Hub</span>
+    </div>
+    <div class="section-divider"></div>
+    <div class="sidebar-item" onclick="switchSection('authentication')" data-tooltip="Authentication">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+      <span>Authentication</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('user-information')" data-tooltip="User Information">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+      <span>User Information</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('notifications')" data-tooltip="Notifications">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-5-5.917V4a2 2 0 10-4 0v1.083A6 6 0 004 11v3.159c0 .538-.214 1.055-.595 1.436L2 17h5m4 0a2 2 0 104 0h-4z"></path></svg>
+      <span>Notifications</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('invoices')" data-tooltip="Invoices">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+      <span>Invoices</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('contracts')" data-tooltip="Contracts">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+      <span>Contracts</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('order-management')" data-tooltip="Order Management">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      <span>Order Management</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('chart-1')" data-tooltip="Chart 1">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+      <span>Chart 1</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('chart-2')" data-tooltip="Chart 2">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V15h5.488"></path></svg>
+      <span>Chart 2</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('chart-3')" data-tooltip="Chart 3">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      <span>Chart 3</span>
+    </div>
+    <div class="sidebar-item" onclick="switchSection('online-chat')" data-tooltip="Online Chat">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5v-14h14v14h-4M9 16l3 3m0 0l3-3"></path></svg>
+      <span>Online Chat</span>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="home-grid">
+      <div class="grid-item" data-section="document-support-hub">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span>Doc & Support</span>
+      </div>
+      <div class="grid-item" data-section="authentication">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 14" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        <span>Authentication</span>
+      </div>
+      <div class="grid-item" data-section="user-information">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        <span>User Info</span>
+      </div>
+      <div class="grid-item" data-section="notifications">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-5-5.917V4a2 2 0 10-4 0v1.083A6 6 0 004 11v3.159c0 .538-.214 1.055-.595 1.436L2 17h5m4 0a2 2 0 104 0h-4z"></path></svg>
+        <span>Notifications</span>
+      </div>
+      <div class="grid-item" data-section="invoices">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        <span>Invoices</span>
+      </div>
+      <div class="grid-item" data-section="contracts">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <span>Contracts</span>
+      </div>
+      <div class="grid-item" data-section="order-management">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <span>Orders</span>
+      </div>
+      <div class="grid-item" data-section="chart-1">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+        <span>Chart 1</span>
+      </div>
+      <div class="grid-item" data-section="chart-2">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V15h5.488"></path></svg>
+        <span>Chart 2</span>
+      </div>
+      <div class="grid-item" data-section="chart-3">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span>Chart 3</span>
+      </div>
+      <div class="grid-item" data-section="online-chat">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5v-14h14v14h-4M9 16l3 3m0 0l3-3"></path></svg>
+        <span>Chat</span>
+      </div>
+    </div>
+    <section id="document-support-hub" class="content-section card active">
+      <div class="card-content"></div>
+    </section>
+    <section id="authentication" class="content-section card">
+      <div id="authentication-content" class="card-content"></div>
+    </section>
+    <section id="user-information" class="content-section card">
+      <div id="user-information-content" class="card-content">
+        <h2 class="text-2xl font-semibold mb-6 px-4 pt-4">User Information</h2>
+        <div id="user-info-content" class="px-4"></div>
+      </div>
+    </section>
+    <section id="notifications" class="content-section card">
+      <div id="notifications-content" class="card-content"></div>
+    </section>
+    <section id="invoices" class="content-section card">
+      <div id="invoices-content" class="card-content"></div>
+    </section>
+    <section id="contracts" class="content-section card">
+      <div id="contracts-content" class="card-content"></div>
+    </section>
+    <section id="order-management" class="content-section card">
+      <div id="order-management-content" class="card-content"></div>
+    </section>
+    <section id="chart-1" class="content-section card">
+      <div id="chart-1-content" class="card-content"></div>
+    </section>
+    <section id="chart-2" class="content-section card">
+      <div id="chart-2-content" class="card-content"></div>
+    </section>
+    <section id="chart-3" class="content-section card">
+      <div id="chart-3-content" class="card-content"></div>
+    </section>
+    <section id="online-chat" class="content-section card">
+      <div id="online-chat-content" class="card-content"></div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <div class="back-btn" id="back-btn">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+          <span>Back</span>
+        </div>
+        <h2 class="modal-title" id="modal-title">Section Title</h2>
+        <div style="width: 20px;"></div>
+      </div>
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <script>
+    // Define the professional lock message
+    const LOCK_MESSAGE = (userIdentifier) => `
+      <div class="lock-message">
+        <h3>Access Restricted</h3>
+        <p>Dear ${userIdentifier || 'User'},</p>
+        <p>The Agrinhouse dashboard is exclusively available to our valued customers. Unfortunately, your account does not currently have access to this feature. To unlock the full capabilities of the dashboard and explore our premium services, please contact our support team to become a registered customer.</p>
+        <p><a href="mailto:support@agrinhouse.com">Contact Agrinhouse Support</a></p>
+      </div>
+    `;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved theme from localStorage
+      const savedTheme = localStorage.getItem('theme') || 'theme-dark';
+      document.body.className = savedTheme;
+
+      // Update header hamburger icon color based on theme
+      const hamburger = document.querySelector('.hamburger');
+      hamburger.style.stroke = savedTheme === 'theme-light' ? '#1f2a44' : '#ffffff';
+
+      // Update user-name color based on theme
+      const userName = document.getElementById('user-name');
+      userName.style.color = savedTheme === 'theme-light' ? '#1f2a44' : '#ffffff';
+
+      // Check session
+      fetch('/check_session.php')
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          if (data.loggedIn) {
+            // Set user information
+            document.getElementById('user-name').textContent = data.name;
+            document.getElementById('user-avatar').textContent = data.name.charAt(0).toUpperCase();
+            const userIdentifier = data.name || data.email || 'User';
+
+            // Lock the dashboard for all users
+            // For desktop: Replace all section content with lock message
+            document.querySelectorAll('.content-section .card-content').forEach(contentDiv => {
+              contentDiv.innerHTML = LOCK_MESSAGE(userIdentifier);
+            });
+
+            // For mobile: Update home-grid to show lock message in modal
+            document.querySelectorAll('.grid-item').forEach(item => {
+              item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                  const section = item.dataset.section;
+                  const title = item.querySelector('span').textContent;
+                  document.getElementById('modal-title').textContent = title;
+                  document.getElementById('modal-content').innerHTML = LOCK_MESSAGE(userIdentifier);
+                  document.getElementById('modal-overlay').classList.add('active');
+                }
+              });
+            });
+
+            // Set default section to document-support-hub
+            switchSection('document-support-hub');
+          } else {
+            // If not logged in, show generic lock message
+            const userIdentifier = 'User';
+            document.querySelectorAll('.content-section .card-content').forEach(contentDiv => {
+              contentDiv.innerHTML = LOCK_MESSAGE(userIdentifier);
+            });
+            document.querySelectorAll('.grid-item').forEach(item => {
+              item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                  const section = item.dataset.section;
+                  const title = item.querySelector('span').textContent;
+                  document.getElementById('modal-title').textContent = title;
+                  document.getElementById('modal-content').innerHTML = LOCK_MESSAGE(userIdentifier);
+                  document.getElementById('modal-overlay').classList.add('active');
+                }
+              });
+            });
+            document.getElementById('modal-overlay').classList.remove('active');
+          }
+        })
+        .catch(error => {
+          console.error('[ERROR] Dashboard session check failed:', error);
+          const userIdentifier = 'User';
+          document.querySelectorAll('.content-section .card-content').forEach(contentDiv => {
+            contentDiv.innerHTML = LOCK_MESSAGE(userIdentifier);
+          });
+          document.querySelectorAll('.grid-item').forEach(item => {
+            item.addEventListener('click', () => {
+              if (window.innerWidth <= 768) {
+                const section = item.dataset.section;
+                const title = item.querySelector('span').textContent;
+                document.getElementById('modal-title').textContent = title;
+                document.getElementById('modal-content').innerHTML = LOCK_MESSAGE(userIdentifier);
+                document.getElementById('modal-overlay').classList.add('active');
+              }
+            });
+          });
+          document.getElementById('modal-overlay').classList.remove('active');
+        });
+
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        fetch('/logout.php')
+          .then(() => {
+            window.location.reload();
+            console.log('[DEBUG] User logged out');
+          });
+      });
+
+      document.getElementById('back-btn').addEventListener('click', () => {
+        document.getElementById('modal-overlay').classList.remove('active');
+      });
+
+      document.querySelector('.hamburger').addEventListener('click', () => {
+        document.querySelector('.sidebar').classList.toggle('active');
+      });
+
+      // Listen for theme change events
+      window.addEventListener('themeChange', (e) => {
+        document.body.className = e.detail.theme;
+        localStorage.setItem('theme', e.detail.theme);
+        hamburger.style.stroke = e.detail.theme === 'theme-light' ? '#1f2a44' : '#ffffff';
+        userName.style.color = e.detail.theme === 'theme-light' ? '#1f2a44' : '#ffffff';
+      });
+    });
+
+    function switchSection(sectionId) {
+      if (window.innerWidth > 768) {
+        // Update active states for sections and sidebar items
+        document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+        const section = document.getElementById(sectionId);
+        const sidebarItem = document.querySelector(`[onclick="switchSection('${sectionId}')"]`);
+        section.classList.add('active');
+        sidebarItem.classList.add('active');
+        document.querySelector('.sidebar').classList.remove('active');
+
+        // Ensure lock message is displayed
+        const userIdentifier = document.getElementById('user-name').textContent || 'User';
+        section.querySelector('.card-content').innerHTML = LOCK_MESSAGE(userIdentifier);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://agrinhouse.com/sitemap-main.xml</loc>
+    <lastmod>2025-10-07</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://agrinhouse.com/sitemap-products.xml</loc>
+    <lastmod>2025-10-07</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://agrinhouse.com/sitemap-media.xml</loc>
+    <lastmod>2025-10-07</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://agrinhouse.com/sitemap-articles.xml</loc>
+    <lastmod>2025-10-07</lastmod>
+  </sitemap>
+</sitemapindex>

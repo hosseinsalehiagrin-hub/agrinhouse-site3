@@ -1,0 +1,48 @@
+User-agent: *
+Crawl-delay: 1
+
+# Sitemap (اول برای پردازش سریع)
+Sitemap: https://agrinhouse.com/sitemap.xml
+
+# Allow: Everything public by default
+Allow: /
+
+# Allow: Essential for SPA rendering (JS, assets)
+Allow: /assets/
+Allow: /js/
+Allow: /components/
+
+# Disallow: Static HTML files to avoid duplicates in SPA
+Disallow: /*.html$
+
+# Disallow: Admin and sensitive paths
+Disallow: /admin/
+Disallow: /uploads/
+Disallow: /data/
+Disallow: /private/
+Disallow: /js/private/
+Disallow: /check_session.php
+Disallow: /config.php
+Disallow: /login.php
+Disallow: /logout.php
+Disallow: /signup.php
+Disallow: /auth-google.php
+Disallow: /send_*.php
+Disallow: /upload_*.php
+Disallow: /get_*.php
+Disallow: /error_log
+
+# Disallow: System files (non-essential)
+Disallow: /manifest.json
+Disallow: /service-worker.js
+
+# Block resource-heavy bots (optional, if server load is high)
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Explicit allow for Bing (for AI crawlers)
+User-agent: Bingbot
+Allow: /
