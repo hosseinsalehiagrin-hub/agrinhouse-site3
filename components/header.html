@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .xai-header, .xai-header * {
+      font-family: system-ui, sans-serif !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .xai-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      background: rgba(30, 30, 32, 0.9);
+      backdrop-filter: blur(10px) saturate(180%);
+      height: 44px;
+      padding: 0 20px;
+      z-index: 1000;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .xai-header:hover {
+      background: rgba(30, 30, 32, 0.95);
+    }
+
+    .xai-header-logo {
+      position: absolute;
+      left: 20px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #fff;
+      opacity: 0.9;
+      text-transform: uppercase;
+      line-height: 44px;
+    }
+
+    .xai-header-logo:hover {
+      opacity: 1;
+    }
+
+    .xai-header-logo .com {
+      font-weight: 700;
+      font-size: 18px;
+      opacity: 0.7;
+      vertical-align: baseline;
+    }
+
+    .xai-header-menus {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .xai-menu-item {
+      position: relative;
+      font-size: 15px;
+      font-weight: 500;
+      color: #d4d4d8;
+      opacity: 0.9;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      z-index: 1002;
+    }
+
+    .xai-menu-item:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .xai-menu-item.active {
+      opacity: 1;
+      background: rgba(59, 130, 246, 0.15);
+    }
+
+    .xai-menu-item.linked {
+      color: #60a5fa;
+      text-decoration: underline;
+    }
+
+    .xai-menu-item.linked:hover {
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .xai-menu-item.direct-link {
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+      padding: 6px 12px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      transition: background 0.2s ease, border 0.2s ease;
+    }
+
+    .xai-menu-item.direct-link:hover {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+      border: 1px solid rgba(59, 130, 246, 0.5);
+    }
+
+    .xai-nav-dropdown {
+      position: absolute;
+      top: 44px;
+      right: 0;
+      background: rgba(245, 245, 245, 0.85);
+      backdrop-filter: blur(20px) saturate(200%);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      padding: 8px 0;
+      width: 260px;
+      display: none;
+      z-index: 999;
+      -webkit-backdrop-filter: blur(20px) saturate(200%);
+    }
+
+    .xai-nav-dropdown.open {
+      display: block;
+    }
+
+    .xai-nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+    }
+
+    .xai-nav-links a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #1c2526;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
+      position: relative;
+      opacity: 0.9;
+    }
+
+    .xai-nav-links a:hover {
+      background: rgba(0, 0, 0, 0.1);
+      opacity: 1;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .xai-nav-links a.active {
+      background: rgba(0, 122, 255, 0.2);
+      opacity: 1;
+      box-shadow: inset 0 1px 2px rgba(0, 122, 255, 0.1);
+    }
+
+    .xai-nav-links a.active::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(to bottom, #007aff, #005bb5);
+      border-radius: 2px;
+    }
+
+    .xai-nav-links svg {
+      width: 18px;
+      height: 18px;
+      fill: #1c2526;
+      opacity: 0.7;
+    }
+
+    .xai-nav-links a:hover svg {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .xai-nav-links .divider {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.15);
+      margin: 4px 12px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .xai-tracking-form {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+    }
+
+    .xai-track-input {
+      flex-grow: 1;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: #1c2526;
+      font-size: 13px;
+      padding: 4px 8px;
+      opacity: 0.9;
+    }
+
+    .xai-track-input:focus {
+      outline: none;
+      border-color: rgba(59, 130, 246, 0.5);
+      opacity: 1;
+    }
+
+    .xai-track-button {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 6px;
+      color: #1c2526;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 8px;
+      cursor: pointer;
+      opacity: 0.9;
+      transition: background 0.2s ease, border 0.2s ease;
+    }
+
+    .xai-track-button:hover {
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), rgba(59, 130, 246, 0.2));
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .xai-header {
+        height: 40px;
+        padding: 0 16px;
+        justify-content: flex-start;
+        pointer-events: none;
+      }
+
+      .xai-header-menus {
+        display: none;
+      }
+
+      .xai-nav-dropdown {
+        display: none;
+      }
+
+      .xai-header-logo {
+        position: absolute;
+        left: 16px;
+        font-size: 20px;
+        line-height: 40px;
+        text-align: left;
+        width: auto;
+        pointer-events: auto;
+      }
+
+      .xai-header-logo .com {
+        font-size: 16px;
+      }
+
+      .control-center.active ~ .xai-header {
+        pointer-events: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="xai-header">
+    <div class="xai-header-logo">Agrinhouse<span class="com">.com</span></div>
+    <div class="xai-header-menus">
+      <a class="xai-menu-item linked direct-link" href="/dashboard">Dashboard</a>
+      <div class="xai-menu-item linked" data-url="/currency-rates/">Currency Rates</div>
+      <div class="xai-menu-item" data-menu="network-hub">Network Hub</div>
+      <div class="xai-menu-item" data-menu="products">Products</div>
+      <div class="xai-menu-item linked" data-url="/inventory/">Inventory</div>
+      <div class="xai-menu-item" data-menu="tracking">Track Shipment</div>
+      <div class="xai-menu-item linked" data-url="/live-stream/">Live Harvest</div>
+    </div>
+    <nav class="xai-nav-dropdown" id="network-hub-dropdown">
+      <div class="xai-nav-links">
+        <a href="/logistics-partners/" data-url="/logistics-partners/" class="active">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Logistics Partners
+        </a>
+        <div class="divider"></div>
+        <a href="/suppliers-partners/" data-url="/suppliers-partners/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Suppliers Partners
+        </a>
+        <div class="divider"></div>
+        <a href="/agency/" data-url="/agency/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Agency
+        </a>
+        <div class="divider"></div>
+        <a href="/consultation-form/" data-url="/consultation-form/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Consultation
+        </a>
+      </div>
+    </nav>
+    <nav class="xai-nav-dropdown" id="products-dropdown">
+      <div class="xai-nav-links">
+        <a href="/fresh-orange/" data-url="/fresh-orange/" class="active">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Fresh Orange
+        </a>
+        <div class="divider"></div>
+        <a href="/fresh-nectarine/" data-url="/fresh-nectarine/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Fresh Nectarine
+        </a>
+        <div class="divider"></div>
+        <a href="/fresh-kiwi/" data-url="/fresh-kiwi/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Fresh Kiwi
+        </a>
+        <div class="divider"></div>
+        <a href="/fresh-apple/" data-url="/fresh-apple/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Fresh Apple
+        </a>
+        <div class="divider"></div>
+        <a href="/garlic/" data-url="/garlic/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Garlic
+        </a>
+        <div class="divider"></div>
+        <a href="/greenhouse-products/" data-url="/greenhouse-products/">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="#0B3D91" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Greenhouse Products
+        </a>
+      </div>
+    </nav>
+    <nav class="xai-nav-dropdown" id="tracking-dropdown">
+      <div class="xai-tracking-form">
+        <input type="text" placeholder="Enter tracking number" class="xai-track-input" id="trackingNumber">
+        <button class="xai-track-button" id="trackButton">Track</button>
+      </div>
+    </nav>
+  </header>
+
+  <script>
+    (function() {
+      'use strict';
+      const debug = m => console.log(`[DEBUG] Header: ${m}`);
+      const error = m => console.error(`[ERROR] Header: ${m}`);
+      const headerContainer = document.querySelector('.xai-header');
+      if (!headerContainer) {
+        error('Header container not found');
+        return;
+      }
+
+      const menuItems = headerContainer.querySelectorAll('.xai-menu-item:not(.linked)');
+      const dropdowns = headerContainer.querySelectorAll('.xai-nav-dropdown');
+      const linkedItems = headerContainer.querySelectorAll('.xai-menu-item.linked');
+      const navLinks = headerContainer.querySelectorAll('.xai-nav-links a');
+      const trackButton = document.getElementById('trackButton');
+      const trackingNumberInput = document.getElementById('trackingNumber');
+
+      async function loadCurrencyModal() {
+        const container = document.body;
+        try {
+          const response = await fetch('/components/currency.html?v=' + Date.now());
+          if (!response.ok) throw new Error(`Failed to fetch currency.html: ${response.status}`);
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const modalElement = doc.querySelector('#currencyModal');
+          const styles = doc.querySelectorAll('style');
+          const scripts = doc.querySelectorAll('script');
+
+          if (!modalElement) throw new Error('Currency modal not found in currency.html');
+
+          const existingModal = document.querySelector('#currencyModal');
+          if (existingModal) {
+            existingModal.remove();
+            debug('Removed existing currency modal');
+          }
+
+          styles.forEach(style => {
+            const styleElement = document.createElement('style');
+            styleElement.textContent = style.textContent;
+            document.head.appendChild(styleElement);
+            debug('Appended style to head');
+          });
+
+          container.appendChild(modalElement);
+          modalElement.style.display = 'block';
+          debug('Currency modal appended to body and set to visible');
+
+          scripts.forEach(script => {
+            const newScript = document.createElement('script');
+            if (script.src) {
+              newScript.src = script.src + '?v=' + Date.now();
+              newScript.async = true;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+            debug(`Executed script: ${script.src || 'inline script'}`);
+          });
+
+          if (typeof window.initializeCurrencyModal === 'function') {
+            window.initializeCurrencyModal();
+            debug('Currency modal initialized');
+          } else {
+            error('initializeCurrencyModal function not found');
+          }
+
+          const amountInput = modalElement.querySelector('#amountInput');
+          if (amountInput) {
+            amountInput.focus();
+            debug('Focused on amount input');
+          }
+
+          modalElement.addEventListener('click', (e) => {
+            if (e.target === modalElement) {
+              modalElement.style.display = 'none';
+              debug('Currency modal closed via backdrop click');
+            }
+          }, { once: false, passive: true });
+
+          debug('Currency modal loaded successfully');
+        } catch (err) {
+          error(`Failed to load currency modal: ${err.message}`);
+          const errorDiv = document.getElementById('error-message');
+          if (errorDiv) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = 'Failed to load currency rates. <button onclick="loadCurrencyModal()">Try Again</button>';
+          }
+        }
+      }
+
+      async function loadTrackingModal(trackingNumber) {
+        const container = document.body;
+        try {
+          // Assuming a similar structure; replace with actual tracking endpoint or logic
+          // For demo, we'll simulate loading a modal similar to currency
+          const response = await fetch('/components/tracking.html?v=' + Date.now() + '&tracking=' + encodeURIComponent(trackingNumber));
+          if (!response.ok) throw new Error(`Failed to fetch tracking.html: ${response.status}`);
+          const html = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const modalElement = doc.querySelector('#trackingModal');
+          const styles = doc.querySelectorAll('style');
+          const scripts = doc.querySelectorAll('script');
+
+          if (!modalElement) throw new Error('Tracking modal not found in tracking.html');
+
+          const existingModal = document.querySelector('#trackingModal');
+          if (existingModal) {
+            existingModal.remove();
+            debug('Removed existing tracking modal');
+          }
+
+          styles.forEach(style => {
+            const styleElement = document.createElement('style');
+            styleElement.textContent = style.textContent;
+            document.head.appendChild(styleElement);
+            debug('Appended style to head for tracking');
+          });
+
+          container.appendChild(modalElement);
+          modalElement.style.display = 'block';
+          debug('Tracking modal appended to body and set to visible');
+
+          scripts.forEach(script => {
+            const newScript = document.createElement('script');
+            if (script.src) {
+              newScript.src = script.src + '?v=' + Date.now();
+              newScript.async = true;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+            debug(`Executed script for tracking: ${script.src || 'inline script'}`);
+          });
+
+          if (typeof window.initializeTrackingModal === 'function') {
+            window.initializeTrackingModal(trackingNumber);
+            debug('Tracking modal initialized');
+          } else {
+            error('initializeTrackingModal function not found');
+          }
+
+          modalElement.addEventListener('click', (e) => {
+            if (e.target === modalElement) {
+              modalElement.style.display = 'none';
+              debug('Tracking modal closed via backdrop click');
+            }
+          }, { once: false, passive: true });
+
+          debug('Tracking modal loaded successfully');
+        } catch (err) {
+          error(`Failed to load tracking modal: ${err.message}`);
+          alert('Failed to load shipment tracking. Please try again.');
+        }
+      }
+
+      function openDropdown(item) {
+        const menuId = item.getAttribute('data-menu') + '-dropdown';
+        const targetDropdown = headerContainer.querySelector(`#${menuId}`);
+        const itemRect = item.getBoundingClientRect();
+
+        dropdowns.forEach(d => d.classList.remove('open'));
+        menuItems.forEach(m => m.classList.remove('active'));
+        linkedItems.forEach(l => l.classList.remove('active'));
+
+        if (targetDropdown) {
+          targetDropdown.classList.add('open');
+          item.classList.add('active');
+          targetDropdown.style.right = `${window.innerWidth - itemRect.right}px`;
+          debug(`Opened dropdown: ${menuId}`);
+        }
+      }
+
+      menuItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openDropdown(item);
+        });
+      });
+
+      linkedItems.forEach(item => {
+        const handleLinkedClick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const url = item.getAttribute('data-url') || item.getAttribute('href');
+          dropdowns.forEach(d => d.classList.remove('open'));
+          menuItems.forEach(m => m.classList.remove('active'));
+          linkedItems.forEach(l => l.classList.remove('active'));
+          item.classList.add('active');
+
+          if (item.classList.contains('direct-link')) {
+            window.location.href = url;
+            debug(`Direct navigation to: ${url}`);
+          } else if (url === '/currency-rates/') {
+            loadCurrencyModal();
+            debug('Triggered currency modal load');
+          } else {
+            debug(`Opening window with URL: ${url}`);
+            window.showWindow(url);
+          }
+        };
+
+        item.addEventListener('click', handleLinkedClick);
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleLinkedClick(e);
+          }
+        });
+      });
+
+      navLinks.forEach(link => {
+        const handleNavClick = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const url = link.getAttribute('data-url');
+          const parentDropdown = link.closest('.xai-nav-dropdown');
+          const parentLinks = parentDropdown.querySelectorAll('.xai-nav-links a');
+          parentLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          dropdowns.forEach(d => d.classList.remove('open'));
+          menuItems.forEach(m => m.classList.remove('active'));
+          linkedItems.forEach(l => l.classList.remove('active'));
+          debug(`Opening window with URL: ${url}`);
+          window.showWindow(url);
+        };
+
+        link.addEventListener('click', handleNavClick);
+        link.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleNavClick(e);
+          }
+        });
+      });
+
+      if (trackButton && trackingNumberInput) {
+        trackButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const trackingNumber = trackingNumberInput.value.trim();
+          if (trackingNumber) {
+            loadTrackingModal(trackingNumber);
+            dropdowns.forEach(d => d.classList.remove('open'));
+            menuItems.forEach(m => m.classList.remove('active'));
+            debug(`Tracking shipment: ${trackingNumber}`);
+          } else {
+            alert('Please enter a tracking number.');
+          }
+        });
+
+        trackingNumberInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            e.stopPropagation();
+            trackButton.click();
+          }
+        });
+      }
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.xai-menu-item') && !e.target.closest('.xai-nav-dropdown')) {
+          dropdowns.forEach(d => d.classList.remove('open'));
+          menuItems.forEach(m => m.classList.remove('active'));
+          linkedItems.forEach(l => l.classList.remove('active'));
+          debug('Closed all dropdowns');
+        }
+      }, { passive: true });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          const openDropdown = headerContainer.querySelector('.xai-nav-dropdown.open');
+          if (openDropdown) {
+            const menuId = openDropdown.id.replace('-dropdown', '');
+            const menuItem = headerContainer.querySelector(`.xai-menu-item[data-menu="${menuId}"]`);
+            if (menuItem) {
+              const itemRect = menuItem.getBoundingClientRect();
+              openDropdown.style.right = `${window.innerWidth - itemRect.right}px`;
+              debug(`Adjusted dropdown position: ${menuId}`);
+            }
+          }
+        }, 150);
+      }, { passive: true });
+    })();
+  </script>
+</body>
+</html>

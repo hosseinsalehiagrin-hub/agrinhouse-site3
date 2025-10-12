@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+    <meta name="description" content="Minimal Fluent-style social media widget with vertical sidebar for premium fruit export content.">
+    <title>Social Media Widget</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <style>
+        body {
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .social-menu-container {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10000;
+        }
+        .social-menu {
+            display: flex;
+            flex-direction: column;
+            width: 48px;
+            padding: 8px 0;
+            transition: width .3s cubic-bezier(.1,.9,.2,1);
+        }
+        .social-menu:hover {
+            width: 180px;
+        }
+        .social-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 44px;
+            padding: 0 8px;
+            margin: 2px 0;
+            text-decoration: none;
+            background: rgba(243,243,243,.8);
+            backdrop-filter: blur(12px) saturate(160%);
+            border-radius: 8px;
+            transition: background .2s cubic-bezier(.1,.9,.2,1);
+            overflow: hidden;
+        }
+        .social-item:hover {
+            background: rgba(230,230,230,.9);
+        }
+        .social-item i {
+            font-size: 22px;
+            width: 32px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .social-item span {
+            color: #333;
+            font-size: 15px;
+            font-weight: 700;
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity .3s cubic-bezier(.1,.9,.2,1), transform .3s cubic-bezier(.1,.9,.2,1);
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+        .social-menu:hover .social-item span {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .facebook i { color: #3b5998; }
+        .twitter i { color: #1da1f2; }
+        .instagram i { color: #e1306c; }
+        .linkedin i { color: #0077b5; }
+        .youtube i { color: #ff0000; }
+        .pinterest i { color: #e60023; }
+        .whatsapp i { color: #25d366; }
+        .telegram i { color: #0088cc; }
+        .tiktok i { color: #000; }
+        .snapchat i { color: #fffc00; }
+        @media (max-width: 767px) {
+            .social-menu-container {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="social-menu-container">
+        <div class="social-menu" role="navigation" aria-label="Social media links">
+            <a href="https://www.facebook.com/agrinhouse/" class="social-item facebook" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-facebook-f"></i>
+                <span>Facebook</span>
+            </a>
+            <a href="https://twitter.com/agrinhouse" class="social-item twitter" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-twitter"></i>
+                <span>Twitter</span>
+            </a>
+            <a href="https://www.instagram.com/agrinhouse/" class="social-item instagram" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
+            </a>
+            <a href="https://www.linkedin.com/company/agrinhouse" class="social-item linkedin" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-linkedin-in"></i>
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://www.youtube.com/channel/UCSyYlqkjJWtG1Tm885AJLSw" class="social-item youtube" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-youtube"></i>
+                <span>YouTube</span>
+            </a>
+            <a href="https://www.pinterest.com/agrinhouse/" class="social-item pinterest" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-pinterest-p"></i>
+                <span>Pinterest</span>
+            </a>
+            <a href="https://wa.me/989134290411" class="social-item whatsapp" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </a>
+            <a href="https://t.me/agrinhouse" class="social-item telegram" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-telegram-plane"></i>
+                <span>Telegram</span>
+            </a>
+            <a href="https://www.tiktok.com/@agrinhouse" class="social-item tiktok" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok</span>
+            </a>
+            <a href="https://www.snapchat.com/add/agrinhouse" class="social-item snapchat" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-snapchat-ghost"></i>
+                <span>Snapchat</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
