@@ -1,0 +1,23 @@
+/* /index.html 200
+/home /home.html 200
+/catalog /home.html?page=catalog 200
+/company-profile /home.html?page=company-profile 200
+/services /home.html?page=services 200
+/contact-us /home.html?page=contact-us 200
+/our-story /home.html?page=our-story 200
+/our-team /home.html?page=our-team 200
+/customer-reviews /home.html?page=customer-reviews 200
+/consultation-form /home.html?page=consultation-form 200
+/agency /home.html?page=agency 200
+/contact1 /home.html?page=contact1 200
+/logistics-partners /home.html?page=logistics-partners 200
+/partner-network /home.html?page=partner-network 200
+/suppliers-partners /home.html?page=suppliers-partners 200
+/tracking /home.html?page=tracking 200
+/proforma /home.html?page=proforma 200
+https://www.agrinhouse.com/* https://agrinhouse.com/:splat 301!
+/components/* /components/:splat 200
+/assets/* /assets/:splat 200
+/js/* /js/:splat 200
+/sw.js /service-worker.js 200
+/home?page=* 200!
