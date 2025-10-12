@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruit Gallery</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #gallery-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 950;
+      display: block;
+      overflow-y: auto;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    * { font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif; }
+    .tile-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-auto-rows: 1fr;
+      grid-auto-flow: dense;
+      gap: 10px;
+      padding: 10px;
+      width: 100%;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .tile {
+      background-color: #0078d7;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      touch-action: manipulation;
+    }
+    .tile:active {
+      transform: scale(0.95);
+    }
+    .tile.wide {
+      grid-column: span 2;
+    }
+    .tile.large {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .tile-number {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 4px;
+      z-index: 10;
+    }
+    .tile.animated img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+    }
+    .tile.animated.fade img:nth-child(1) { animation: fadeCycle 16s infinite; animation-delay: 0s; }
+    .tile.animated.fade img:nth-child(2) { animation: fadeCycle 16s infinite; animation-delay: 4s; }
+    .tile.animated.fade img:nth-child(3) { animation: fadeCycle 16s infinite; animation-delay: 8s; }
+    .tile.animated.fade img:nth-child(4) { animation: fadeCycle 16s infinite; animation-delay: 12s; }
+    .tile.animated.slide-up img:nth-child(1) { animation: slideUpCycle 14s infinite; animation-delay: 0s; }
+    .tile.animated.slide-up img:nth-child(2) { animation: slideUpCycle 14s infinite; animation-delay: 3.5s; }
+    .tile.animated.slide-up img:nth-child(3) { animation: slideUpCycle 14s infinite; animation-delay: 7s; }
+    .tile.animated.slide-up img:nth-child(4) { animation: slideUpCycle 14s infinite; animation-delay: 10.5s; }
+    .tile.animated.slide-left img:nth-child(1) { animation: slideLeftCycle 18s infinite; animation-delay: 0s; }
+    .tile.animated.slide-left img:nth-child(2) { animation: slideLeftCycle 18s infinite; animation-delay: 4.5s; }
+    .tile.animated.slide-left img:nth-child(3) { animation: slideLeftCycle 18s infinite; animation-delay: 9s; }
+    .tile.animated.slide-left img:nth-child(4) { animation: slideLeftCycle 18s infinite; animation-delay: 13.5s; }
+    .tile.animated.slide-top img:nth-child(1) { animation: slideTopCycle 15s infinite; animation-delay: 0s; }
+    .tile.animated.slide-top img:nth-child(2) { animation: slideTopCycle 15s infinite; animation-delay: 3.75s; }
+    .tile.animated.slide-top img:nth-child(3) { animation: slideTopCycle 15s infinite; animation-delay: 7.5s; }
+    .tile.animated.slide-top img:nth-child(4) { animation: slideTopCycle 15s infinite; animation-delay: 11.25s; }
+    .tile.animated.slide-top-1 img:nth-child(1) { animation: slideTopCycle 14s infinite; animation-delay: 0s; }
+    .tile.animated.slide-top-1 img:nth-child(2) { animation: slideTopCycle 14s infinite; animation-delay: 3.5s; }
+    .tile.animated.slide-top-1 img:nth-child(3) { animation: slideTopCycle 14s infinite; animation-delay: 7s; }
+    .tile.animated.slide-top-1 img:nth-child(4) { animation: slideTopCycle 14s infinite; animation-delay: 10.5s; }
+    .tile.animated.slide-top-2 img:nth-child(1) { animation: slideTopCycle 16s infinite; animation-delay: 0s; }
+    .tile.animated.slide-top-2 img:nth-child(2) { animation: slideTopCycle 16s infinite; animation-delay: 4s; }
+    .tile.animated.slide-top-2 img:nth-child(3) { animation: slideTopCycle 16s infinite; animation-delay: 8s; }
+    .tile.animated.slide-top-2 img:nth-child(4) { animation: slideTopCycle 16s infinite; animation-delay: 12s; }
+    .tile.animated.slide-top-3 img:nth-child(1) { animation: slideTopCycle 17s infinite; animation-delay: 0s; }
+    .tile.animated.slide-top-3 img:nth-child(2) { animation: slideTopCycle 17s infinite; animation-delay: 4.25s; }
+    .tile.animated.slide-top-3 img:nth-child(3) { animation: slideTopCycle 17s infinite; animation-delay: 8.5s; }
+    .tile.animated.slide-top-3 img:nth-child(4) { animation: slideTopCycle 17s infinite; animation-delay: 12.75s; }
+    @keyframes fadeCycle {
+      0% { opacity: 0; }
+      6.25% { opacity: 1; }
+      25% { opacity: 1; }
+      31.25% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    @keyframes slideUpCycle {
+      0% { opacity: 0; transform: translateY(10px); }
+      7.14% { opacity: 1; transform: translateY(0); }
+      25% { opacity: 1; transform: translateY(0); }
+      32.14% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 0; transform: translateY(-10px); }
+    }
+    @keyframes slideLeftCycle {
+      0% { opacity: 0; transform: translateX(10px); }
+      5.56% { opacity: 1; transform: translateX(0); }
+      25% { opacity: 1; transform: translateX(0); }
+      30.56% { opacity: 0; transform: translateX(-10px); }
+      100% { opacity: 0; transform: translateX(-10px); }
+    }
+    @keyframes slideTopCycle {
+      0% { opacity: 0; transform: translateY(-10px); }
+      6.67% { opacity: 1; transform: translateY(0); }
+      25% { opacity: 1; transform: translateY(0); }
+      31.67% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 0; transform: translateY(10px); }
+    }
+    .shutter {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(180deg, #1a1a1a, #2c2c2c);
+      z-index: 1000;
+      transform: translateY(0);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .shutter.open {
+      transform: translateY(100%);
+    }
+    .reveal-button {
+      background: linear-gradient(135deg, #0078d7, #005a9e);
+      color: white;
+      font-weight: 600;
+      font-size: 1.2rem;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .reveal-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+    .reveal-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .close-button {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, #d32f2f, #b71c1c);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+    }
+    .close-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+    .close-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    @media (max-width: 768px) {
+      .tile-container {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-auto-rows: 140px;
+        gap: 10px;
+        padding: 10px;
+        min-height: auto;
+        overflow-y: auto;
+      }
+      .tile.wide,
+      .tile.large {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .tile-number {
+        font-size: 12px;
+        padding: 3px 6px;
+      }
+      .tile.animated img {
+        animation: none;
+      }
+      .tile.animated img:nth-child(1) {
+        opacity: 1;
+      }
+      .reveal-button {
+        font-size: 1rem;
+        padding: 0.5rem 1.5rem;
+      }
+      .close-button {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.8rem;
+        top: 12px;
+        right: 12px;
+      }
+    }
+    @media (max-width: 480px) {
+      .tile-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-auto-rows: 120px;
+        gap: 8px;
+        padding: 8px;
+        min-height: auto;
+        overflow-y: auto;
+      }
+      .tile-number {
+        font-size: 10px;
+        padding: 2px 4px;
+      }
+      .reveal-button {
+        font-size: 0.9rem;
+        padding: 0.5rem 1.25rem;
+      }
+      .close-button {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.7rem;
+        top: 8px;
+        right: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="gallery-modal">
+    <div id="root"></div>
+  </div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const ProductGallery = () => {
+      const imageSet = [
+        '/assets/images/piyal-pakira-VYKhztyEh44-unsplash.jpg',
+        '/assets/images/lucian-alexe-f35j-5N2N8s-unsplash.jpg',
+        '/assets/images/gibblesmash-asdf-ZoNHIYTwREY-unsplash.jpg',
+        '/assets/images/erwan-hesry-1q75BReKpms-unsplash.jpg'
+      ];
+
+      const products = [
+        { id: 1, size: 'large', animated: true, animationType: 'slide-top' },
+        { id: 2, size: 'standard', animated: true, animationType: 'slide-top-1' },
+        { id: 3, size: 'standard', animated: true, animationType: 'slide-top-2' },
+        { id: 4, size: 'wide', animated: true, animationType: 'fade' },
+        { id: 5, size: 'standard', animated: true, animationType: 'slide-up' },
+        { id: 6, size: 'standard', animated: true, animationType: 'slide-left' },
+        { id: 7, size: 'large', animated: true, animationType: 'fade' },
+        { id: 8, size: 'standard', animated: true, animationType: 'slide-up' },
+        { id: 9, size: 'standard', animated: true, animationType: 'slide-left' },
+        { id: 10, size: 'wide', animated: true, animationType: 'fade' },
+        { id: 11, size: 'standard', animated: true, animationType: 'slide-up' },
+        { id: 12, size: 'standard', animated: true, animationType: 'slide-left' },
+        { id: 13, size: 'large', animated: true, animationType: 'fade' },
+        { id: 14, size: 'standard', animated: true, animationType: 'slide-up' },
+        { id: 15, size: 'standard', animated: true, animationType: 'slide-left' },
+        { id: 16, size: 'wide', animated: true, animationType: 'fade' },
+        { id: 17, size: 'standard', animated: true, animationType: 'slide-up' },
+        { id: 18, size: 'standard', animated: true, animationType: 'slide-left' },
+        { id: 19, size: 'large', animated: true, animationType: 'fade' },
+        { id: 20, size: 'standard', animated: true, animationType: 'slide-up' },
+        { id: 21, size: 'standard', animated: true, animationType: 'slide-left' },
+        { id: 22, size: 'standard', animated: true, animationType: 'fade' },
+        { id: 23, size: 'wide', animated: true, animationType: 'slide-up' },
+        { id: 24, size: 'standard', animated: true, animationType: 'slide-left' },
+        { id: 25, size: 'standard', animated: true, animationType: 'slide-top-1' },
+      ];
+
+      const [tiles, setTiles] = useState(products);
+      const [isShutterOpen, setIsShutterOpen] = useState(false);
+
+      useEffect(() => {
+        console.log('[DEBUG] Gallery: React component mounted');
+        const calculatePlaceholders = () => {
+          const container = document.querySelector('.tile-container');
+          if (!container) {
+            console.warn('[DEBUG] Gallery: Tile container not found');
+            return;
+          }
+
+          const viewportWidth = window.innerWidth;
+          const minTileWidth = 200;
+          const padding = 10 * 2;
+          const gap = 10;
+          const columns = Math.floor((viewportWidth - padding) / (minTileWidth + gap));
+
+          let totalColumnUnits = 0;
+          products.forEach(product => {
+            totalColumnUnits += product.size === 'standard' ? 1 : 2;
+          });
+
+          const rows = Math.ceil(totalColumnUnits / columns);
+          const totalCells = rows * columns;
+          const cellsUsed = products.reduce((sum, product) => sum + (product.size === 'standard' ? 1 : 2), 0);
+          const placeholdersNeeded = totalCells - cellsUsed;
+
+          const placeholders = Array.from({ length: Math.max(0, placeholdersNeeded) }, (_, i) => ({
+            id: `placeholder-${i}`,
+            size: 'standard',
+            animated: true,
+            animationType: 'slide-top-3',
+          }));
+
+          setTiles([...products, ...placeholders]);
+          console.log('[DEBUG] Gallery: Tiles updated with placeholders', placeholders.length);
+        };
+
+        calculatePlaceholders();
+        window.addEventListener('resize', calculatePlaceholders);
+        return () => window.removeEventListener('resize', calculatePlaceholders);
+      }, []);
+
+      const [selectedImage, setSelectedImage] = useState(null);
+
+      const openLightbox = (src) => {
+        if (src) {
+          setSelectedImage(src);
+          console.log('[DEBUG] Gallery: Lightbox opened with image', src);
+        }
+      };
+
+      const closeLightbox = () => {
+        setSelectedImage(null);
+        console.log('[DEBUG] Gallery: Lightbox closed');
+      };
+
+      const handleReveal = () => {
+        setIsShutterOpen(true);
+        console.log('[DEBUG] Gallery: Shutter opened');
+      };
+
+      const handleClose = () => {
+        setIsShutterOpen(false);
+        setSelectedImage(null);
+        const container = document.getElementById('gallery-modal-container');
+        if (container) {
+          container.classList.remove('show');
+          container.innerHTML = '';
+          console.log('[DEBUG] Gallery: Modal closed via close button');
+        }
+      };
+
+      return (
+        <div className="w-full h-screen bg-gray-900 flex flex-col relative">
+          <div className={`shutter ${isShutterOpen ? 'open' : ''}`}>
+            {!isShutterOpen && (
+              <button className="reveal-button" onClick={handleReveal}>
+                Explore Gallery
+              </button>
+            )}
+          </div>
+          {isShutterOpen && (
+            <button className="close-button" onClick={handleClose}>
+              Close Gallery
+            </button>
+          )}
+          <div className="tile-container">
+            {tiles.map((tile) => (
+              <div
+                key={tile.id}
+                className={`tile ${tile.size} ${tile.animated ? `animated ${tile.animationType}` : ''}`}
+                onClick={() => openLightbox(imageSet[0])}
+              >
+                {tile.animated ? (
+                  <>
+                    {imageSet.map((src, index) => (
+                      <img key={index} src={src} alt={`Tile ${tile.id}`} />
+                    ))}
+                  </>
+                ) : (
+                  <img src={imageSet[0]} alt={`Tile ${tile.id}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                )}
+                <div className="tile-number">{tile.id}</div>
+              </div>
+            ))}
+          </div>
+          {selectedImage && (
+            <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" onClick={closeLightbox}>
+              <div className="relative w-full max-w-5xl p-4">
+                <img
+                  src={selectedImage}
+                  alt="Selected Product"
+                  className="w-full h-auto max-h-[90vh] object-contain rounded-xl"
+                />
+                <button
+                  className="absolute top-3 right-3 text-white bg-red-600 rounded-full w-8 h-8 flex items-center justify-center text-base font-medium"
+                  onClick={closeLightbox}
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    console.log('[DEBUG] Gallery: Rendering React component');
+    ReactDOM.render(<ProductGallery />, document.getElementById('root'));
+  </script>
+</body>
+</html>
