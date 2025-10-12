@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5,user-scalable=yes">
+  <meta name="description" content="Agrinhouse - Secure Login and Registration for premium Iranian fruit exporter. Sign in to access kiwi, apple, orange, citrus, and greenhouse products catalog.">
+  <meta name="keywords" content="Agrinhouse login, Iranian fruit exporter, secure sign in, fruit catalog">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Login - Agrinhouse">
+  <meta property="og:description" content="Secure login to access premium Iranian fruits like kiwi, apple, orange, citrus, and greenhouse products.">
+  <meta property="og:url" content="https://agrinhouse.com/login">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://agrinhouse.com/login">
+  <title>Login - Agrinhouse</title>
+  <link rel="preload" href="/assets/icons/logo33.png" as="image">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    html {
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0a0f24;
+      position: fixed;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .5s ease;
+    }
+    #particles-js.loaded {
+      opacity: 1;
+    }
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0a0f24;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .loading-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-top: 3px solid #007AFF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    #content-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      padding: 0 1rem;
+    }
+    #content-container.visible {
+      display: flex;
+    }
+    .login-container {
+      background: linear-gradient(135deg, rgba(10,15,36,.95), rgba(20,30,60,.9));
+      backdrop-filter: blur(14px) saturate(200%);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.5);
+      width: 100%;
+      max-width: 560px;
+      max-height: calc(100vh - 40px);
+      padding: 2.5rem;
+      color: #fff;
+      text-align: center;
+      position: relative;
+      min-height: 600px;
+      height: auto;
+      opacity: 0;
+      transform: scale(.95);
+      transition: opacity .5s ease-out, transform .5s ease-out;
+      overflow: hidden;
+    }
+    .login-container.loaded {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .logo {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.75rem;
+      border-radius: 12px;
+      object-fit: contain;
+      transition: transform .3s ease;
+    }
+    .logo:hover {
+      transform: scale(1.05);
+    }
+    .login-container h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: .5rem;
+      color: #f3f4f6;
+      line-height: 1.2;
+    }
+    .login-container .subtitle {
+      font-size: 1rem;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+    .macos-input {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #fff;
+      font-size: 1.1rem;
+      padding: .9rem 1rem;
+      border-radius: 10px;
+      width: 100%;
+      margin-bottom: 1.25rem;
+      transition: all .3s ease;
+      min-height: 48px;
+    }
+    .macos-input:focus {
+      outline: none;
+      border-color: #007AFF;
+      box-shadow: 0 0 0 3px rgba(0,122,255,.1);
+      background: rgba(255,255,255,.12);
+    }
+    .macos-input::placeholder {
+      color: rgba(255,255,255,.5);
+    }
+    .macos-input.error {
+      border-color: #ff4d4d;
+      box-shadow: 0 0 0 3px rgba(255,77,77,.1);
+    }
+    .password-field {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255,255,255,.7);
+      cursor: pointer;
+      font-size: .9rem;
+      padding: .25rem;
+      transition: color .2s ease;
+      min-width: 60px;
+    }
+    .toggle-password:hover {
+      color: #fff;
+    }
+    .macos-btn {
+      background: linear-gradient(135deg, #1e3a8a, #1e40af);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: .9rem 1rem;
+      border-radius: 10px;
+      border: none;
+      width: 100%;
+      cursor: pointer;
+      transition: all .3s ease;
+      margin-bottom: 1rem;
+      min-height: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .macos-btn:hover {
+      background: linear-gradient(135deg, #1e40af, #1e3a8a);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(30,64,175,.4);
+    }
+    .macos-btn:active {
+      transform: translateY(0);
+    }
+    .macos-btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .macos-btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.3);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: .9rem 1rem;
+      border-radius: 10px;
+      width: 100%;
+      cursor: pointer;
+      transition: all .3s ease;
+      margin-bottom: 1rem;
+      min-height: 48px;
+    }
+    .macos-btn-secondary:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(255,255,255,.5);
+      transform: translateY(-1px);
+    }
+    .google-btn {
+      background: #fff;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .75rem;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: .9rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,.1);
+      width: 100%;
+      cursor: pointer;
+      transition: all .3s ease;
+      margin-bottom: 1rem;
+      min-height: 48px;
+      height: 48px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.1);
+      overflow: hidden;
+      position: relative;
+    }
+    .google-btn:hover {
+      background: #f5f5f5;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    }
+    .google-btn img {
+      width: 24px;
+      height: 24px;
+    }
+    .google-btn.loading::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 1;
+    }
+    .google-btn.loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #4285F4;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+    .toggle-text {
+      color: #007AFF;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 1.5rem;
+      display: inline-block;
+      transition: all .3s ease;
+      text-decoration: none;
+    }
+    .toggle-text:hover {
+      color: #0066CC;
+      text-decoration: underline;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .error-message {
+      color: #ff4d4d;
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+      padding: .75rem;
+      background: rgba(255,77,77,.1);
+      border: 1px solid rgba(255,77,77,.3);
+      border-radius: 8px;
+      display: none;
+      font-weight: 500;
+      animation: shake .5s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .form-content {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .form-content.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+      position: absolute;
+      width: 100%;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      body { padding: 0 1rem; }
+      .login-container { max-width: 100%; padding: 1.5rem; max-height: calc(100vh - 40px); }
+      .logo { width: 100px; height: 100px; }
+      .login-container h2 { font-size: 1.5rem; }
+      .login-container .subtitle { font-size: .9rem; }
+      .macos-input { font-size: 1rem; padding: .8rem 1rem; min-height: 44px; }
+      .macos-btn, .macos-btn-secondary, .google-btn { font-size: 1rem; padding: .8rem 1rem; min-height: 44px; height: 44px; }
+      .google-btn img { width: 20px; height: 20px; }
+      .toggle-password { font-size: .8rem; right: .8rem; }
+      .toggle-text { font-size: .9rem; }
+      .error-message { font-size: .9rem; padding: .6rem; }
+    }
+    @media (max-width: 480px) {
+      .login-container { max-width: 100%; padding: 1.25rem; max-height: calc(100vh - 40px); }
+      .logo { width: 80px; height: 80px; }
+      .login-container h2 { font-size: 1.25rem; }
+      .login-container .subtitle { font-size: .8rem; margin-bottom: 1.5rem; }
+      .macos-input { font-size: .9rem; padding: .7rem .9rem; margin-bottom: 1rem; min-height: 40px; }
+      .macos-btn, .macos-btn-secondary, .google-btn { font-size: .9rem; padding: .7rem .9rem; min-height: 40px; height: 40px; }
+      .google-btn img { width: 18px; height: 18px; }
+      .toggle-password { font-size: .7rem; right: .7rem; }
+      .toggle-text { font-size: .8rem; }
+      .error-message { font-size: .8rem; padding: .5rem; }
+    }
+    @media (max-width: 360px) {
+      .login-container { max-width: 100%; padding: 1rem; max-height: calc(100vh - 40px); }
+      .logo { width: 70px; height: 70px; }
+      .login-container h2 { font-size: 1.1rem; }
+      .login-container .subtitle { font-size: .7rem; }
+      .macos-input { font-size: .8rem; padding: .6rem .8rem; min-height: 38px; }
+      .macos-btn, .macos-btn-secondary, .google-btn { font-size: .8rem; padding: .6rem .8rem; min-height: 38px; height: 38px; }
+      .google-btn img { width: 16px; height: 16px; }
+      .toggle-password { font-size: .6rem; right: .6rem; }
+      .toggle-text { font-size: .7rem; }
+      .error-message { font-size: .7rem; padding: .4rem; }
+    }
+    .login-container * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .macos-input {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+    .focus-trap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+  </div>
+  <div id="particles-js"></div>
+  <div id="content-container">
+    <div class="login-container" role="main" aria-label="Login and Signup">
+      <img src="/assets/icons/logo33.png" alt="Agrinhouse Logo" class="logo" loading="eager">
+      <div id="login-form" class="form-content" role="form" aria-labelledby="login-title">
+        <h2 id="login-title">Welcome to Agrinhouse</h2>
+        <p class="subtitle">Your Gateway to Iranian Fresh Fruit Exports</p>
+        <div class="error-message" id="login-error" role="alert" aria-live="polite"></div>
+        <div class="password-field">
+          <input type="email" id="login-email" class="macos-input" placeholder="Email" aria-label="Email address" autocomplete="username" required aria-describedby="login-error">
+        </div>
+        <div class="password-field">
+          <input type="password" id="login-password" class="macos-input" placeholder="Password" aria-label="Password" autocomplete="current-password" required aria-describedby="login-error">
+          <button type="button" class="toggle-password" aria-label="Toggle password visibility" tabindex="-1">Show</button>
+        </div>
+        <button class="macos-btn" id="login-button" onclick="handleLogin()" aria-label="Sign in to your account">Sign In</button>
+        <button class="macos-btn-secondary" onclick="handleGuest()" aria-label="Continue as guest">Continue as Guest</button>
+        <div id="googleSignInDiv" class="google-btn loading" aria-label="Sign in with Google"></div>
+        <p class="text-center">Don't have an account? <span class="toggle-text" onclick="toggleForm('signup')" tabindex="0" role="button" aria-label="Create new account">Create an Account</span></p>
+      </div>
+      <div id="signup-form" class="form-content hidden" role="form" aria-labelledby="signup-title">
+        <h2 id="signup-title">Join Agrinhouse</h2>
+        <p class="subtitle">Your Gateway to Iranian Fresh Fruit Exports</p>
+        <div class="error-message" id="signup-error" role="alert" aria-live="polite"></div>
+        <input type="text" id="signup-name" class="macos-input" placeholder="Full Name" aria-label="Full name" autocomplete="name" required aria-describedby="signup-error">
+        <input type="email" id="signup-email" class="macos-input" placeholder="Email" aria-label="Email address" autocomplete="email" required aria-describedby="signup-error">
+        <div class="password-field">
+          <input type="password" id="signup-password" class="macos-input" placeholder="Password" aria-label="Password" autocomplete="new-password" required aria-describedby="signup-error">
+          <button type="button" class="toggle-password" aria-label="Toggle password visibility" tabindex="-1">Show</button>
+        </div>
+        <div class="password-field">
+          <input type="password" id="signup-confirm-password" class="macos-input" placeholder="Confirm Password" aria-label="Confirm password" autocomplete="new-password" required aria-describedby="signup-error">
+          <button type="button" class="toggle-password" aria-label="Toggle password visibility" tabindex="-1">Show</button>
+        </div>
+        <button class="macos-btn" id="signup-button" onclick="handleSignUp()" aria-label="Register new account">Register</button>
+        <div id="googleSignInDivSignup" class="google-btn loading" aria-label="Sign up with Google"></div>
+        <p class="text-center">Already have an account? <span class="toggle-text" onclick="toggleForm('login')" tabindex="0" role="button" aria-label="Sign in to existing account">Sign In</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="focus-trap" tabindex="0" id="first-focus"></div>
+  <div class="focus-trap" tabindex="0" id="last-focus"></div>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js" defer></script>
+  <script>
+    (function() {
+      'use strict';
+      const debug = m => console.log(`[DEBUG] Login: ${m}`);
+      const error = m => console.error(`[ERROR] Login: ${m}`);
+      let elements = {};
+      let isInitialized = false;
+      let currentForm = 'login';
+      let isTransitioning = false;
+
+      function initElements() {
+        elements = {
+          loadingOverlay: document.getElementById('loadingOverlay'),
+          contentContainer: document.getElementById('content-container'),
+          particlesContainer: document.getElementById('particles-js'),
+          loginContainer: document.querySelector('.login-container'),
+          loginForm: document.getElementById('login-form'),
+          signupForm: document.getElementById('signup-form'),
+          loginError: document.getElementById('login-error'),
+          signupError: document.getElementById('signup-error'),
+          loginEmail: document.getElementById('login-email'),
+          loginPassword: document.getElementById('login-password'),
+          loginButton: document.getElementById('login-button'),
+          signupName: document.getElementById('signup-name'),
+          signupEmail: document.getElementById('signup-email'),
+          signupPassword: document.getElementById('signup-password'),
+          signupConfirmPassword: document.getElementById('signup-confirm-password'),
+          signupButton: document.getElementById('signup-button'),
+          firstFocus: document.getElementById('first-focus'),
+          lastFocus: document.getElementById('last-focus'),
+          googleLoginBtn: document.getElementById('googleSignInDiv'),
+          googleSignupBtn: document.getElementById('googleSignInDivSignup')
+        };
+        const missing = Object.entries(elements).filter(([key, el]) => !el && key !== 'lastFocus');
+        if (missing.length > 0) {
+          error(`Missing DOM elements: ${missing.map(([k]) => k).join(', ')}`);
+          return false;
+        }
+        return true;
+      }
+
+      function initializePage() {
+        if (isInitialized) return;
+        if (!initElements()) {
+          error('Failed to initialize DOM elements');
+          return;
+        }
+        debug('Initializing page components');
+        elements.contentContainer.classList.add('visible');
+        setTimeout(() => { initParticles(); }, 50);
+        setTimeout(() => {
+          elements.loginContainer.classList.add('loaded');
+          elements.particlesContainer.classList.add('loaded');
+        }, 100);
+        setTimeout(() => { elements.loadingOverlay.classList.add('hidden'); }, 600);
+        setTimeout(() => { initGoogleSignIn(); }, 200);
+        setupEventListeners();
+        setupFocusTrap();
+        setTimeout(() => { elements.loginEmail.focus(); }, 700);
+        isInitialized = true;
+        debug('Page initialization complete');
+      }
+
+      function initParticles() {
+        if (window.particlesJS) {
+          try {
+            particlesJS('particles-js', {
+              particles: {
+                number: { value: 50, density: { enable: true, value_area: 800 } },
+                color: { value: '#1e90ff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#1e90ff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 1.5, direction: 'none', random: true, out_mode: 'out' }
+              },
+              interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: false }, onclick: { enable: false }, onresize: { enable: true, density_auto: true } },
+                modes: { repulse: { distance: 100 }, push: { particles_nb: 4 } }
+              },
+              retina_detect: true
+            });
+            debug('Particles.js initialized');
+          } catch (err) {
+            error(`Failed to initialize particles: ${err.message}`);
+          }
+        } else {
+          error('particles.js library not loaded');
+        }
+      }
+
+      function setupEventListeners() {
+        document.querySelectorAll('.toggle-password').forEach(button => {
+          button.addEventListener('click', handlePasswordToggle);
+          button.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handlePasswordToggle.call(button);
+            }
+          });
+        });
+        const inputs = [
+          elements.loginEmail, elements.loginPassword,
+          elements.signupName, elements.signupEmail,
+          elements.signupPassword, elements.signupConfirmPassword
+        ];
+        inputs.forEach(input => {
+          if (input) {
+            input.addEventListener('keydown', handleEnterKey);
+            input.addEventListener('input', handleInputValidation);
+            input.addEventListener('blur', handleInputValidation);
+          }
+        });
+        document.querySelectorAll('.toggle-text').forEach(text => {
+          text.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              const formType = text.textContent.includes('Create') ? 'signup' : 'login';
+              toggleForm(formType);
+            }
+          });
+        });
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') { clearErrors(); }
+        });
+        window.addEventListener('resize', debounce(handleResize, 250));
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        debug('Event listeners setup complete');
+      }
+
+      function setupFocusTrap() {
+        const handleFocusTrap = e => {
+          if (e.target === elements.lastFocus) {
+            e.preventDefault();
+            elements.firstFocus.focus();
+          } else if (e.target === elements.firstFocus) {
+            e.preventDefault();
+            elements.loginEmail.focus();
+          }
+        };
+        elements.firstFocus.addEventListener('focus', handleFocusTrap);
+        elements.lastFocus.addEventListener('focus', handleFocusTrap);
+        document.addEventListener('focus', e => {
+          if (!elements.contentContainer.contains(e.target)) {
+            elements.loginEmail.focus();
+          }
+        }, true);
+      }
+
+      function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+
+      function clearErrors() {
+        [elements.loginError, elements.signupError].forEach(error => {
+          if (error) {
+            error.style.display = 'none';
+            error.textContent = '';
+          }
+        });
+        debug('Errors cleared');
+      }
+
+      function showError(form, message) {
+        const errorEl = form === 'login' ? elements.loginError : elements.signupError;
+        if (errorEl) {
+          errorEl.textContent = message;
+          errorEl.style.display = 'block';
+          errorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        debug(`Error shown for ${form}: ${message}`);
+      }
+
+      function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      }
+
+      function setLoadingState(button, isLoading) {
+        if (!button) return;
+        if (isLoading) {
+          button.disabled = true;
+          button.textContent = button === elements.loginButton ? 'Signing In...' : 'Registering...';
+          button.style.opacity = '0.7';
+        } else {
+          button.disabled = false;
+          button.textContent = button === elements.loginButton ? 'Sign In' : 'Register';
+          button.style.opacity = '1';
+        }
+      }
+
+      function handlePasswordToggle() {
+        const input = this.previousElementSibling;
+        if (!input) return;
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        this.textContent = isPassword ? 'Hide' : 'Show';
+        debug(`Password visibility toggled to ${isPassword ? 'text' : 'password'}`);
+      }
+
+      function handleEnterKey(e) {
+        if (e.key !== 'Enter') return;
+        if (currentForm === 'login') {
+          handleLogin();
+        } else {
+          handleSignUp();
+        }
+      }
+
+      function handleInputValidation(e) {
+        const input = e.target;
+        if (!input.classList.contains('macos-input')) return;
+        input.classList.remove('error');
+        if (input.type === 'email' && input.value.trim()) {
+          if (!validateEmail(input.value.trim())) {
+            input.classList.add('error');
+          }
+        }
+        if (input.id === 'signup-confirm-password' && input.value.trim()) {
+          const password = elements.signupPassword.value;
+          if (password && input.value !== password) {
+            input.classList.add('error');
+          }
+        }
+      }
+
+      function handleResize() {
+        if (window.google && window.google.accounts) {
+          const width = Math.min(560, window.innerWidth - 32);
+          google.accounts.id.renderButton(elements.googleLoginBtn, { width, theme: 'outline', size: 'large', text: 'signin_with' });
+          google.accounts.id.renderButton(elements.googleSignupBtn, { width, theme: 'outline', size: 'large', text: 'signup_with' });
+        }
+      }
+
+      window.toggleForm = function(formType) {
+        if (isTransitioning || formType === currentForm) return;
+        isTransitioning = true;
+        clearErrors();
+        const activeForm = currentForm === 'login' ? elements.loginForm : elements.signupForm;
+        const targetForm = currentForm === 'login' ? elements.signupForm : elements.loginForm;
+        if (formType === 'login') {
+          elements.loginEmail.value = '';
+          elements.loginPassword.value = '';
+        } else {
+          elements.signupName.value = '';
+          elements.signupEmail.value = '';
+          elements.signupPassword.value = '';
+          elements.signupConfirmPassword.value = '';
+        }
+        activeForm.classList.add('hidden');
+        setTimeout(() => {
+          activeForm.style.display = 'none';
+          targetForm.style.display = 'block';
+          targetForm.classList.remove('hidden');
+          currentForm = formType;
+          const firstInput = formType === 'login' ? elements.loginEmail : elements.signupName;
+          firstInput.focus();
+          debug(`Switched to ${formType} form`);
+          isTransitioning = false;
+        }, 150);
+      };
+
+      async function loadHomeContent() {
+        window.location.replace("/home.html");
+      }
+
+      function cleanupCurrentPage() {
+        const particlesContainer = document.getElementById('particles-js');
+        if (particlesContainer) { particlesContainer.style.display = 'none'; }
+        if (window.pJSDom && window.pJSDom[0]) { window.pJSDom[0].pJS.fn.vendors.destroypJS(); }
+        document.head.querySelectorAll('style:not([data-critical]), link[rel="stylesheet"]:not([href*="font-awesome"]), script:not([src*="particles"]):not([src*="jwt-decode"])').forEach(node => { node.remove(); });
+        document.body.style.cssText = '';
+        document.body.classList.remove('initialized');
+      }
+
+      async function loadPageScripts(doc) {
+        const scripts = Array.from(doc.querySelectorAll('script'));
+        for (const script of scripts) {
+          try {
+            if (script.src) {
+              const newScript = document.createElement('script');
+              newScript.src = script.src;
+              newScript.async = script.async;
+              newScript.defer = script.defer;
+              await new Promise((resolve, reject) => {
+                newScript.onload = resolve;
+                newScript.onerror = () => reject(new Error(`Failed to load ${script.src}`));
+                document.head.appendChild(newScript);
+              });
+              debug(`Loaded script: ${script.src}`);
+            } else if (script.textContent) {
+              const newScript = document.createElement('script');
+              newScript.textContent = script.textContent;
+              document.head.appendChild(newScript);
+              debug('Executed inline script');
+            }
+          } catch (err) {
+            error(`Script loading error: ${err.message}`);
+          }
+        }
+      }
+
+      function dispatchPageEvents() {
+        const events = ['DOMContentLoaded', 'load'];
+        events.forEach(eventType => {
+          const event = new Event(eventType, { bubbles: true, cancelable: true });
+          document.dispatchEvent(event);
+        });
+        const appReadyEvent = new CustomEvent('app:ready', {
+          detail: { from: 'login', timestamp: Date.now() },
+          bubbles: true
+        });
+        document.dispatchEvent(appReadyEvent);
+      }
+
+      window.handleLogin = async function() {
+        const email = elements.loginEmail.value.trim();
+        const password = elements.loginPassword.value.trim();
+        clearErrors();
+        if (!email || !password) {
+          showError('login', 'Please fill in all fields');
+          return;
+        }
+        if (!validateEmail(email)) {
+          showError('login', 'Please enter a valid email');
+          elements.loginEmail.classList.add('error');
+          return;
+        }
+        if (password.length < 6) {
+          showError('login', 'Password must be at least 6 characters');
+          elements.loginPassword.classList.add('error');
+          return;
+        }
+        setLoadingState(elements.loginButton, true);
+        debug(`Login attempt for: ${email}`);
+        try {
+          const response = await fetch('/login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'same-origin'
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.success) {
+            window.location.replace("/home.html");
+          } else {
+            showError('login', data.message || 'Login failed');
+          }
+        } catch (err) {
+          showError('login', 'Network error. Please check your connection.');
+          error(`Login error: ${err.message}`);
+        } finally {
+          setLoadingState(elements.loginButton, false);
+        }
+      };
+
+      window.handleSignUp = async function() {
+        const name = elements.signupName.value.trim();
+        const email = elements.signupEmail.value.trim();
+        const password = elements.signupPassword.value.trim();
+        const confirmPassword = elements.signupConfirmPassword.value.trim();
+        clearErrors();
+        if (!name || !email || !password || !confirmPassword) {
+          showError('signup', 'Please fill in all fields');
+          return;
+        }
+        if (!validateEmail(email)) {
+          showError('signup', 'Please enter a valid email');
+          elements.signupEmail.classList.add('error');
+          return;
+        }
+        if (password.length < 8) {
+          showError('signup', 'Password must be at least 8 characters');
+          elements.signupPassword.classList.add('error');
+          return;
+        }
+        if (password !== confirmPassword) {
+          showError('signup', 'Passwords do not match');
+          elements.signupConfirmPassword.classList.add('error');
+          return;
+        }
+        setLoadingState(elements.signupButton, true);
+        debug(`Signup attempt for: ${email}`);
+        try {
+          const response = await fetch('/signup.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify({ name, email, password }),
+            credentials: 'same-origin'
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          const data = await response.json();
+          if (data.success) {
+            window.location.replace("/home.html");
+          } else {
+            showError('signup', data.message || 'Signup failed');
+          }
+        } catch (err) {
+          showError('signup', 'Network error. Please check your connection.');
+          error(`Signup error: ${err.message}`);
+        } finally {
+          setLoadingState(elements.signupButton, false);
+        }
+      };
+
+      window.handleGuest = async function() {
+        debug('Guest access requested');
+        window.location.replace("/home.html");
+      };
+
+      function initGoogleSignIn() {
+        const googleScript = document.createElement('script');
+        googleScript.src = 'https://accounts.google.com/gsi/client';
+        googleScript.async = true;
+        googleScript.defer = true;
+        googleScript.onload = () => {
+          debug('Google Sign-In library loaded');
+          try {
+            google.accounts.id.initialize({
+              client_id: '193770810684-ipancpqkjocrh3ptqp11p5jtgtqgul12.apps.googleusercontent.com',
+              callback: handleGoogleSignIn,
+              auto_select: false,
+              context: 'signin',
+              ux_mode: 'popup',
+              cancel_on_tap_outside: false
+            });
+            renderGoogleButtons();
+            elements.googleLoginBtn.classList.remove('loading');
+            elements.googleSignupBtn.classList.remove('loading');
+          } catch (err) {
+            error(`Google initialization failed: ${err.message}`);
+            showError(currentForm, 'Failed to load Google sign-in');
+          }
+        };
+        googleScript.onerror = () => {
+          error('Failed to load Google Sign-In script');
+          showError(currentForm, 'Failed to load Google sign-in');
+        };
+        document.head.appendChild(googleScript);
+      }
+
+      function renderGoogleButtons() {
+        try {
+          const width = Math.min(560, window.innerWidth - 32);
+          google.accounts.id.renderButton(elements.googleLoginBtn, { theme: 'outline', size: 'large', width: width, text: 'signin_with', shape: 'rectangular' });
+          google.accounts.id.renderButton(elements.googleSignupBtn, { theme: 'outline', size: 'large', width: width, text: 'signup_with', shape: 'rectangular' });
+          debug('Google buttons rendered');
+        } catch (err) {
+          error(`Failed to render Google buttons: ${err.message}`);
+        }
+      }
+
+      function handleGoogleSignIn(response) {
+        debug('Google Sign-In callback received');
+        try {
+          const profile = jwt_decode(response.credential);
+          debug(`Google profile decoded: ${JSON.stringify(profile)}`);
+          setLoadingState(elements.loginButton, true);
+          fetch('/auth-google.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify({ id: profile.sub, name: profile.name, email: profile.email, picture: profile.picture }),
+            credentials: 'same-origin'
+          })
+            .then(res => {
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              return res.json();
+            })
+            .then(data => {
+              if (data.success) {
+                window.location.replace("/home.html");
+              } else {
+                showError(currentForm, data.message || 'Google sign-in failed');
+              }
+            })
+            .catch(err => {
+              showError(currentForm, 'Network error in Google sign-in');
+              error(`Google auth error: ${err.message}`);
+            })
+            .finally(() => {
+              setLoadingState(elements.loginButton, false);
+            });
+        } catch (err) {
+          showError(currentForm, 'Error processing Google sign-in');
+          error(`Google JWT decode error: ${err.message}`);
+        }
+      }
+
+      function checkThirdPartyCookies() {
+        const testCookie = 'google_third_party_test';
+        try {
+          document.cookie = `${testCookie}=1; SameSite=None; Secure`;
+          if (document.cookie.includes(testCookie)) {
+            document.cookie = `${testCookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            debug('Third-party cookies supported');
+            return true;
+          }
+        } catch (e) {}
+        debug('Third-party cookies may be blocked');
+        return false;
+      }
+
+      function showCookieWarning() {
+        const warning = 'Please enable third-party cookies for Google sign-in.';
+        showError(currentForm, warning);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializePage);
+      } else {
+        requestAnimationFrame(initializePage);
+      }
+
+      setTimeout(() => {
+        if (!checkThirdPartyCookies()) {
+          showCookieWarning();
+        }
+      }, 1000);
+
+      window.__loginDebug = { clearErrors, validateEmail, toggleForm: window.toggleForm, elements };
+    })();
+  </script>
+</body>
+</html>
