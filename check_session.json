@@ -1,1 +1,7 @@
-
+{
+  "loggedIn": true,
+  "name": "Test User",
+  "email": "test@agrinhouse.com",
+  "avatar": "",
+  "provider": "local"
+}
