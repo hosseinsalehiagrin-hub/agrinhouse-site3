@@ -1,3 +1,32 @@
+# ===============================
+# ⚙️ Cloudflare Pages Configuration
+# Project: AgrinHouse Site 3
+# Author: Hossein Salehi
+# Date: 2025-10-14
+# ===============================
+
+# نام پروژه (در Cloudflare Pages)
 name = "agrinhouse-site3"
+
+# مسیر خروجی فایل‌های استاتیک (در این پروژه همان ریشه است)
 pages_build_output_dir = "."
+
+# تاریخ سازگاری برای Cloudflare Runtime API
 compatibility_date = "2025-10-14"
+
+# نسخه NodeJS در محیط Cloudflare
+[vars]
+NODE_VERSION = "20"
+
+# فعال‌سازی نظارت (logs و performance tracking)
+[observability]
+enabled = true
+
+# -------------------------------
+# ⚡️ توابع Cloudflare Pages
+# پوشه‌ی functions در ریشه‌ی پروژه قرار دارد
+# فایل اصلی: functions/[[...path]].js
+# -------------------------------
+[site]
+bucket = "."
+entry-point = "functions"
