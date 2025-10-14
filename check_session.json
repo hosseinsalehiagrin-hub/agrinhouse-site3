@@ -1,7 +1,11 @@
 {
   "loggedIn": true,
-  "name": "Test User",
-  "email": "test@agrinhouse.com",
-  "avatar": "",
-  "provider": "local"
+  "user": {
+    "id": 1,
+    "name": "Admin",
+    "email": "admin@agrinhouse.com"
+  },
+  "session": {
+    "expires": "2026-01-01T00:00:00Z"
+  }
 }
