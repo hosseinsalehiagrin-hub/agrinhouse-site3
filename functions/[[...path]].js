@@ -1,3 +1,4 @@
+// FORCE DEPLOY: 2025-10-14 - Functions sync fix
 // functions/[[...path]].js - Complete SPA Router for AgrinHouse
 export async function onRequest(context) {
   const url = new URL(context.request.url);
