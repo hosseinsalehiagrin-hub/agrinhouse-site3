@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Agrinhouse: Mobile dock and grid navigation for premium fruit import and export, with macOS-style dock and iPhone-style app grid.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="robots" content="noindex">
+  <title>Agrinhouse Mobile Navigation</title>
+  <style>
+    :root{--app-padding:5px;--grid-gap:6px;--grid-row-gap:16px;--grid-margin-top:10px;--app-min-height:95px;--app-icon-padding:8px;--app-border-radius:16px;--about-padding:10px;--about-border-radius:20px;--icon-size:74px;--icon-border-radius:16px;--app-label-margin-top:10px;--app-label-font-size:14px;--label-max-width:95px;--dock-gap:8px;--dock-padding:6px 10px;--dock-border-radius:24px;--dock-icon-width:64px;--dock-icon-height:68px;--dock-icon-padding:4px;--dock-icon-border-radius:16px;--logo-width:80px;--logo-height:84px;--separator-height:28px;--separator-margin:0 10px;--label-font-size:12px;--label-margin-top:8px;--small-dock-gap:7px;--small-dock-padding:5px 9px;--small-dock-border-radius:20px;--small-dock-icon-width:56px;--small-dock-icon-height:62px;--small-dock-icon-padding:3px;--small-dock-icon-border-radius:12px;--small-logo-width:72px;--small-logo-height:76px;--small-label-font-size:11px;--small-label-margin-top:3px;--small-label-max-width:70px;--small-separator-height:24px;--small-separator-margin:0 9px;--small-app-padding:4px;--small-grid-gap:4px;--small-grid-row-gap:10px;--small-app-min-height:65px;--small-app-icon-padding:2px;--small-app-border-radius:12px;--small-about-padding:6px;--small-about-border-radius:16px;--small-icon-size:66px;--small-app-label-font-size:12px;--small-app-label-margin-top:5px;--tiny-dock-gap:6px;--tiny-dock-padding:4px 8px;--tiny-dock-icon-width:48px;--tiny-dock-icon-height:56px;--tiny-dock-icon-padding:2px;--tiny-dock-icon-border-radius:10px;--tiny-logo-width:64px;--tiny-logo-height:68px;--tiny-label-font-size:10px;--tiny-label-margin-top:2px;--tiny-label-max-width:60px;--tiny-separator-height:22px;--tiny-separator-margin:0 8px;--tiny-app-padding:3px;--tiny-grid-gap:3px;--tiny-grid-row-gap:8px;--tiny-app-min-height:55px;--tiny-app-icon-padding:1px;--tiny-app-border-radius:10px;--tiny-about-padding:4px;--tiny-about-border-radius:14px;--tiny-icon-size:58px;--tiny-app-label-font-size:11px;--tiny-app-label-margin-top:3px}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}.mobile-grid-container{position:fixed;top:40px;left:0;width:100%;height:calc(100% - 40px - 60px);z-index:950;display:block;padding:var(--app-padding);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;color:#fff;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;background:transparent}.container{background:transparent;width:100%;max-width:1200px;margin:0 auto}.app-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:var(--grid-gap);row-gap:var(--grid-row-gap);padding:0;width:100%;max-width:1200px;margin:0 auto;margin-top:var(--grid-margin-top);height:calc(100% - var(--grid-margin-top))}.app-icon{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;position:relative;min-height:var(--app-min-height);padding:var(--app-icon-padding);border-radius:var(--app-border-radius);touch-action:none}.app-icon--about{border:1px solid rgba(255,255,255,.8);border-radius:var(--about-border-radius);padding:var(--about-padding)}.app-icon__icon{width:var(--icon-size);height:var(--icon-size);border-radius:var(--icon-border-radius);box-shadow:0 4px 12px rgba(0,0,0,.3);position:relative;background:rgba(30,30,32,.5)}.app-icon__icon--x{background:#fff}.app-icon__img{width:var(--icon-size);height:var(--icon-size);border-radius:var(--icon-border-radius);object-fit:cover}.app-icon__label{margin-top:var(--app-label-margin-top);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:var(--app-label-font-size);font-weight:500;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);max-width:var(--label-max-width);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:1}.app-icon__indicator{position:absolute;bottom:4px;width:6px;height:6px;background:#2196f3;border-radius:50%;display:none}.app-icon--active .app-icon__indicator{display:block}.app-icon:active .app-icon__icon{transform:scale(.95)}.app-icon.wiggle{animation:wiggle .5s ease-in-out infinite}.macos-dock-container{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0));left:50%;transform:translateX(-50%);z-index:960;max-width:95%;width:100%;display:block}.macos-dock{display:flex;justify-content:center;align-items:center;background:rgba(10,25,47,.85);border:1px solid rgba(255,255,255,.3);border-radius:var(--dock-border-radius);padding:var(--dock-padding);box-shadow:0 6px 16px rgba(0,0,0,.3);gap:var(--dock-gap)}.macos-dock-icon{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;position:relative;width:var(--dock-icon-width);height:var(--dock-icon-height);padding:var(--dock-icon-padding);border-radius:var(--dock-icon-border-radius);touch-action:manipulation}.macos-dock-icon.logo-icon{width:var(--logo-width);height:var(--logo-height);padding:var(--dock-icon-padding)}.macos-dock-icon .icon-box{width:var(--dock-icon-width);height:var(--dock-icon-width);border-radius:var(--icon-border-radius);box-shadow:0 4px 12px rgba(0,0,0,.3);display:flex;justify-content:center;align-items:center;background:rgba(30,30,32,.5)}.macos-dock-icon.logo-icon .icon-box{width:var(--logo-width);height:var(--logo-width)}.macos-dock-icon img{width:100%;height:100%;border-radius:var(--icon-border-radius);object-fit:cover;filter:drop-shadow(0 1px 3px rgba(0,0,0,.3))}.macos-dock-icon.logo-icon img{object-fit:contain;padding:4px}.macos-dock-icon span{margin-top:var(--label-margin-top);font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:var(--label-font-size);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3);max-width:var(--label-max-width);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:1}.macos-dock-icon::after{content:'';position:absolute;bottom:0;width:6px;height:6px;background:#2196f3;border-radius:50%;display:none}.macos-dock-icon.active::after{display:block}.macos-dock-icon:active .icon-box{transform:scale(.95)}.macos-dock-icon.wiggle{animation:wiggle .5s ease-in-out infinite}.macos-dock-icon.logo-icon{cursor:default}.macos-dock-separator{width:1px;height:var(--separator-height);background:rgba(255,255,255,.35);margin:var(--separator-margin);align-self:center}@keyframes wiggle{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}@media (min-width:769px){.mobile-grid-container,.macos-dock-container{display:none}}@media (max-width:768px){.mobile-grid-container{display:block!important}.macos-dock-container{display:block!important}}@media (max-width:480px){:root{--dock-gap:var(--small-dock-gap);--dock-padding:var(--small-dock-padding);--dock-border-radius:var(--small-dock-border-radius);--dock-icon-width:var(--small-dock-icon-width);--dock-icon-height:var(--small-dock-icon-height);--dock-icon-padding:var(--small-dock-icon-padding);--dock-icon-border-radius:var(--small-dock-icon-border-radius);--logo-width:var(--small-logo-width);--logo-height:var(--small-logo-height);--label-font-size:var(--small-label-font-size);--label-margin-top:var(--small-label-margin-top);--label-max-width:var(--small-label-max-width);--separator-height:var(--small-separator-height);--separator-margin:var(--small-separator-margin);--app-padding:var(--small-app-padding);--grid-gap:var(--small-grid-gap);--grid-row-gap:var(--small-grid-row-gap);--app-min-height:var(--small-app-min-height);--app-icon-padding:var(--small-app-icon-padding);--app-border-radius:var(--small-app-border-radius);--about-padding:var(--small-about-padding);--about-border-radius:var(--small-about-border-radius);--icon-size:var(--small-icon-size);--app-label-font-size:var(--small-app-label-font-size);--app-label-margin-top:var(--small-app-label-margin-top)}}@media (max-width:360px){:root{--dock-gap:var(--tiny-dock-gap);--dock-padding:var(--tiny-dock-padding);--dock-icon-width:var(--tiny-dock-icon-width);--dock-icon-height:var(--tiny-dock-icon-height);--dock-icon-padding:var(--tiny-dock-icon-padding);--dock-icon-border-radius:var(--tiny-dock-icon-border-radius);--logo-width:var(--tiny-logo-width);--logo-height:var(--tiny-logo-height);--label-font-size:var(--tiny-label-font-size);--label-margin-top:var(--tiny-label-margin-top);--label-max-width:var(--tiny-label-max-width);--separator-height:var(--tiny-separator-height);--separator-margin:var(--tiny-separator-margin);--app-padding:var(--tiny-app-padding);--grid-gap:var(--tiny-grid-gap);--grid-row-gap:var(--tiny-grid-row-gap);--app-min-height:var(--tiny-app-min-height);--app-icon-padding:var(--tiny-app-icon-padding);--app-border-radius:var(--tiny-app-border-radius);--about-padding:var(--tiny-about-padding);--about-border-radius:var(--tiny-about-border-radius);--icon-size:var(--tiny-icon-size);--app-label-font-size:var(--tiny-app-label-font-size);--app-label-margin-top:var(--tiny-app-label-margin-top)}}.macos-dock-right{display:flex;flex:1;justify-content:space-evenly;align-items:center}
+  </style>
+</head>
+<body>
+  <div class="mobile-grid-container">
+    <div class="container">
+      <div class="app-grid" role="navigation" aria-label="Application Icon Grid">
+        <div class="app-icon app-icon--active app-icon--about" role="button" tabindex="0" aria-label="About Us" data-url="https://agrinhouse.com/about-us/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/link (1).png" alt="About Us Icon" loading="eager">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">About Us</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Products" data-url="https://agrinhouse.com/products/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/محصولات موبایل.svg" alt="Products Icon" loading="eager">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Products</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Partner" data-url="https://agrinhouse.com/partner-network/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/همکاری با ما موبایل.svg" alt="Partner Icon" loading="eager">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Partner</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Archive" data-url="https://agrinhouse.com/archive/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/ارشیو.svg" alt="Archive Icon" loading="eager">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Archive</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Podcast" data-url="https://agrinhouse.com/podcast/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/پادکست-2025-08-31T144723.960.svg" alt="Podcast Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Podcast</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="VK" data-url="https://vk.com/agrinhouse">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/وی کیimage2vector-68.svg" alt="VK Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">VK</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Videos" data-url="https://agrinhouse.com/videos/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/یه مثلث ابی.svg" alt="Videos Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Videos</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Live Stream" data-url="https://agrinhouse.com/live-stream/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/لایو.svg" alt="Live Stream Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Live Stream</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Facebook" data-url="https://www.facebook.com/agrinhouse">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/لینکدین.svg" alt="Facebook Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Facebook</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="TikTok" data-url="https://www.tiktok.com/@agrinhouse">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/تیک تاکimage2vector-65.svg" alt="TikTok Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">TikTok</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Instagram" data-url="https://www.instagram.com/agrinhouse">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/اینستاگرامinstagram-4-500x512.webp" alt="Instagram Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Instagram</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="YouTube" data-url="https://www.youtube.com/@agrinhouse">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/یوتیوب.svg" alt="YouTube Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">YouTube</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Location" data-url="https://agrinhouse.com/location/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/یوتیوب.svg" alt="Location Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Location</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="WhatsApp" data-url="https://wa.me/+989134290411">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/واتساپ.svg" alt="WhatsApp Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">WhatsApp</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Photos" data-url="https://agrinhouse.com/photos/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/88.svg" alt="Photos Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Photos</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="X" data-url="https://x.com/agrinhouse">
+          <div class="app-icon__icon app-icon__icon--x">
+            <img class="app-icon__img" src="/assets/icons/image2vector-88.svg" alt="X Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">X</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="Services" data-url="https://agrinhouse.com/services/">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/ایکون 4مربع خوشگله.svg" alt="Services Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">Services</span>
+        </div>
+        <div class="app-icon" role="button" tabindex="0" aria-label="LinkedIn" data-url="https://www.linkedin.com/company/agrinhouse">
+          <div class="app-icon__icon">
+            <img class="app-icon__img" src="/assets/icons/لینکدین.svg" alt="LinkedIn Icon" loading="lazy">
+            <span class="app-icon__indicator"></span>
+          </div>
+          <span class="app-icon__label">LinkedIn</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="macos-dock-container">
+    <div class="macos-dock">
+      <div class="macos-dock-icon logo-icon" aria-label="Agrinhouse Logo">
+        <div class="icon-box"><img src="/assets/icons/logo33_LE_upscale_balanced_x4-4-150x150.webp" alt="Agrinhouse Logo" loading="eager"></div>
+        <span>Logo</span>
+      </div>
+      <div class="macos-dock-separator"></div>
+      <div class="macos-dock-right">
+        <div class="macos-dock-icon" role="button" tabindex="0" aria-label="Contact" data-url="contact1">
+          <div class="icon-box"><img src="/assets/icons/ارتباط با ما .svg" alt="Contact Icon" loading="eager"></div>
+          <span>Contact</span>
+        </div>
+        <div class="macos-dock-icon" role="button" tabindex="0" aria-label="Order" data-url="https://agrinhouse.com/order/">
+          <div class="icon-box"><img src="/assets/icons/1111.svg" alt="Order Icon" loading="eager"></div>
+          <span>Order</span>
+        </div>
+        <div class="macos-dock-icon" role="button" tabindex="0" aria-label="Phone" data-url="tel:+989134290411">
+          <div class="icon-box"><img src="/assets/icons/image2vector-82.svg" alt="Phone Icon" loading="eager"></div>
+          <span>Phone</span>
+        </div>
+        <div class="macos-dock-icon" role="button" tabindex="0" aria-label="AI Assistant" data-url="https://eu.jotform.com/agent/0198194d83187de79f968132b82e01a8bdc7?embedMode=iframe&background=0&shadow=1">
+          <div class="icon-box"><img src="/assets/icons/ربات-2025-08-24T094149.871.svg" alt="AI Assistant Icon" loading="eager"></div>
+          <span>AI Assistant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{const grid=document.querySelector('.app-grid');const dock=document.querySelector('.macos-dock');const adjustGrid=()=>{const vh=window.innerHeight;const mw=window.innerWidth;const items=grid.querySelectorAll('.app-icon').length;const columns=4;const nr=Math.ceil(items/columns);if(mw<=460){const rootStyle=getComputedStyle(document.documentElement);const appPadding=parseFloat(rootStyle.getPropertyValue('--app-padding'));const mt=parseFloat(rootStyle.getPropertyValue('--grid-margin-top'));const computedGrid=getComputedStyle(grid);const rowGap=parseFloat(computedGrid.rowGap);const availableHeight=vh-40-60-2*appPadding-mt;const rh=(availableHeight-(nr-1)*rowGap)/nr;grid.style.gridAutoRows=`${rh}px`;grid.style.height=`calc(100% - ${mt}px)`}else{grid.style.gridAutoRows='auto';grid.style.height='auto'}};adjustGrid();window.addEventListener('resize',adjustGrid);const timeouts=new Map();const handleInteraction=(icon,e,isDock)=>{e.preventDefault();const ac=isDock?'active':'app-icon--active';const icons=isDock?dock.querySelectorAll('.macos-dock-icon:not(.logo-icon)'):grid.querySelectorAll('.app-icon');icons.forEach(ic=>ic.classList.remove(ac));icon.classList.add(ac);const url=icon.getAttribute('data-url');if(url&&url!=='#'){if(typeof window.showWindow==='function'){window.showWindow(url)}else{window.location.href=url}}};const delegateEvent=(container,selector,eventName,handler)=>{container.addEventListener(eventName,e=>{const target=e.target.closest(selector);if(target){handler(target,e)}})};delegateEvent(grid,'.app-icon','click',handleInteraction);delegateEvent(dock,'.macos-dock-icon:not(.logo-icon)','click',(icon,e)=>handleInteraction(icon,e,true));delegateEvent(grid,'.app-icon','keydown',(icon,e)=>{if(e.key==='Enter'||e.key===' '){handleInteraction(icon,e)}});delegateEvent(dock,'.macos-dock-icon:not(.logo-icon)','keydown',(icon,e)=>{if(e.key==='Enter'||e.key===' '){handleInteraction(icon,e,true)}});delegateEvent(grid,'.app-icon','touchstart',(icon,e)=>{e.preventDefault();const timeout=setTimeout(()=>{icon.classList.add('wiggle')},1000);timeouts.set(icon,timeout);const touchEnd=()=>{clearTimeout(timeout);icon.classList.remove('wiggle');handleInteraction(icon,e);grid.removeEventListener('touchend',touchEnd);grid.removeEventListener('touchcancel',touchCancel)};const touchCancel=()=>{clearTimeout(timeout);icon.classList.remove('wiggle');grid.removeEventListener('touchend',touchEnd);grid.removeEventListener('touchcancel',touchCancel)};grid.addEventListener('touchend',touchEnd);grid.addEventListener('touchcancel',touchCancel)});delegateEvent(dock,'.macos-dock-icon:not(.logo-icon)','touchstart',(icon,e)=>{e.preventDefault();const timeout=setTimeout(()=>{icon.classList.add('wiggle')},1000);timeouts.set(icon,timeout);const touchEnd=()=>{clearTimeout(timeout);icon.classList.remove('wiggle');handleInteraction(icon,e,true);dock.removeEventListener('touchend',touchEnd);dock.removeEventListener('touchcancel',touchCancel)};const touchCancel=()=>{clearTimeout(timeout);icon.classList.remove('wiggle');dock.removeEventListener('touchend',touchEnd);dock.removeEventListener('touchcancel',touchCancel)};dock.addEventListener('touchend',touchEnd);dock.addEventListener('touchcancel',touchCancel)});window.addEventListener('load',()=>{const fi=grid.querySelector('.app-icon')||dock.querySelector('.macos-dock-icon:not(.logo-icon)');if(fi)fi.focus()})});
+  </script>
+</body>
+</html>
