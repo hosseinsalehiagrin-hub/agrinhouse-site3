@@ -1,644 +1,188 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-  <meta name="description" content="Agrinhouse - Largest Iranian fruit exporter offering premium kiwi, apple, orange, citrus, and greenhouse products.">
-  <meta name="keywords" content="Agrinhouse, Iranian fruit exporter, kiwi, apple, orange, citrus, greenhouse products">
-  <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Agrinhouse - Premium Fruit Exporter">
-  <meta property="og:description" content="Discover premium kiwi, apple, orange, citrus, and greenhouse products from Iran's largest fruit exporter.">
-  <meta property="og:image" content="/assets/icons/og-image.jpg">
-  <meta property="og:url" content="https://agrinhouse.com">
-  <meta property="og:type" content="website">
-  <link rel="canonical" href="https://agrinhouse.com/">
-  <title>Agrinhouse</title>
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/assets/icons/favicon.ico">
-  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-  <link rel="dns-prefetch" href="https://agrinhouse.com">
-  <link rel="stylesheet" href="/styles.min.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-  <link rel="stylesheet" href="/components/control-center/control-center.css" media="all">
-  <link rel="stylesheet" href="/components/control-center/search-box.css" media="all">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      width: 100%;
-      background: linear-gradient(135deg, #0a0f24, #1e2a78, #0a0f24);
-      background-size: 100% 100%;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      overflow-x: hidden;
-      touch-action: manipulation;
-      position: relative;
-    }
-    #mobile-header {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 48px;
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(10, 25, 47, 0.9));
-      backdrop-filter: blur(12px) saturate(180%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 16px;
-    }
-    #mobile-header .brand {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      font-weight: 600;
-      font-size: 18px;
-      color: #ffffff;
-      text-decoration: none;
-      transition: opacity 0.5s ease;
-    }
-    #mobile-header .dashboard-btn {
-      width: 100px;
-      height: 36px;
-      border-radius: 8px;
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: #ffffff;
-      text-align: center;
-      line-height: 36px;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    #mobile-header .dashboard-btn:hover {
-      transform: scale(1.08);
-    }
-    #loading {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 2000;
-      transition: opacity 0.3s ease;
-    }
-    #loading.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #loading svg {
-      width: 200px;
-      height: 250px;
-    }
-    #loading svg path {
-      stroke: #F52D04;
-      stroke-width: 12;
-      stroke-linecap: round;
-      fill: none;
-      will-change: stroke-dashoffset;
-    }
-    #loading svg .line {
-      animation-fill-mode: forwards;
-    }
-    #loading svg .ground {
-      stroke-dasharray: 75;
-      stroke-dashoffset: 75;
-      animation: drawGround 1.6s cubic-bezier(0.42, 0, 0.58, 1) forwards;
-    }
-    #loading svg .wall-left {
-      stroke-dasharray: 90;
-      stroke-dashoffset: 90;
-      animation: drawWallLeft 2s cubic-bezier(0.4, 0, 0.2, 1.05) forwards;
-      animation-delay: 1.6s;
-    }
-    #loading svg .roof {
-      stroke-dasharray: 250;
-      stroke-dashoffset: 250;
-      animation: drawRoof 2.4s cubic-bezier(0.42, 0, 0.58, 1) forwards;
-      animation-delay: 3.6s;
-    }
-    @keyframes drawGround {
-      from { stroke-dashoffset: 75; }
-      to { stroke-dashoffset: 0; }
-    }
-    @keyframes drawWallLeft {
-      0% { stroke-dashoffset: 90; }
-      80% { stroke-dashoffset: -5; }
-      100% { stroke-dashoffset: 0; }
-    }
-    @keyframes drawRoof {
-      from { stroke-dashoffset: 250; }
-      to { stroke-dashoffset: 0; }
-    }
-    #error-message {
-      display: none;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      width: 320px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-      backdrop-filter: blur(12px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
-      z-index: 2000;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    #error-message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    #error-message h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-      font-weight: 600;
-      color: #ffffff;
-    }
-    #error-message p {
-      margin: 0 0 12px;
-      color: #e0e0e0;
-    }
-    #error-message button {
-      background: linear-gradient(135deg, #0078d4, #005a9e);
-      color: #ffffff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      transition: background 0.2s ease, transform 0.2s ease;
-    }
-    #error-message button:hover {
-      background: linear-gradient(135deg, #0091ff, #0070cc);
-      transform: translateY(-1px);
-    }
-    #error-message button:active {
-      transform: translateY(0);
-    }
-    #window-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: 1100;
-      display: none;
-    }
-    #skeleton {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: 2000;
-    }
-    #skeleton-logo {
-      display: none;
-    }
-    #header-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 44px;
-      z-index: 1000;
-      display: none;
-    }
-    #dock-container {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      z-index: 950;
-      display: none;
-    }
-    #map-container {
-      position: fixed;
-      top: 44px;
-      left: 0;
-      width: 100%;
-      height: calc(100dvh - 44px);
-      z-index: 1;
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-    #map-container svg {
-      width: 95%;
-      height: auto;
-      max-height: 80%;
-    }
-    #map-container svg .country {
-      fill: rgba(0, 150, 255, .05);
-      stroke-width: .5;
-      stroke-opacity: .8;
-      transition: fill .2s ease, stroke .3s ease;
-      will-change: fill, stroke;
-    }
-    #map-container svg .country:not(#IR):not([title="Iran"]):not([id*="iran" i]) {
-      cursor: pointer;
-    }
-    #map-container svg .country:not(#IR):not([title="Iran"]):not([id*="iran" i]):hover {
-      fill: #4caf50;
-      stroke-opacity: 1;
-    }
-    #map-container svg #IR, #map-container svg [title="Iran"], #map-container svg [id*="iran" i] {
-      fill: #5ebeff;
-      stroke: #00e676;
-      stroke-width: .5;
-      stroke-opacity: 1;
-      filter: drop-shadow(0 0 4px rgba(0, 230, 118, .7));
-      cursor: default;
-    }
-    .tooltip {
-      position: absolute;
-      background: rgba(0, 0, 0, .8);
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 4px;
-      font-size: 14px;
-      pointer-events: none;
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity .2s ease;
-      font-family: Arial, sans-serif;
-      text-align: left;
-    }
-    .tooltip.visible {
-      opacity: 1;
-    }
-    #icons-container {
-      transition: opacity .3s ease, visibility .3s ease;
-    }
-    #icons-container.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-    #control-center-container {
-      display: none;
-    }
-    @media (max-width: 767px) {
-      #control-center-container {
-        display: block;
-      }
-      #mobile-header {
-        display: flex !important;
-      }
-      #header-container {
-        display: none !important;
-      }
-    }
-    @media (min-width: 769px) {
-      #dock-container {
-        display: block;
-      }
-      #iphone-container {
-        display: none;
-      }
-      #chat-icon-container {
-        display: block;
-      }
-      #map-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      #map-container svg {
-        transform: scale(1);
-        transition: transform .3s ease;
-      }
-      #mobile-header {
-        display: none !important;
-      }
-      #header-container {
-        display: block !important;
-      }
-    }
-    @media (max-width: 480px) {
-      #dock-container {
-        display: none;
-      }
-      #icons-container {
-        display: block;
-      }
-      #chat-icon-container {
-        display: none;
-      }
-      #map-container {
-        display: none;
-      }
-    }
-    @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-  </style>
-  <script type="application/ld+json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agrinhouse - Premium Iranian Fruit Exporter | Kiwi, Apples, Oranges, Citrus & Greenhouse Products</title>
+    <meta name="description" content="Agrinhouse is Iran's leading exporter of premium fresh fruits including kiwi, apples, oranges, citrus, garlic, and high-quality greenhouse produce. Discover our global export services, exceptional quality, and commitment to sustainable agriculture.">
+    <meta name="keywords" content="Agrinhouse, Iranian fruit exporter, kiwi export, apple exporter Iran, orange supplier, citrus fruits, garlic export, greenhouse products, fresh produce Iran, fruit import export">
+    <meta name="robots" content="index, follow">
+    <meta name="ai-content" content="Agrinhouse specializes in exporting premium Iranian fruits and greenhouse products worldwide. Key offerings include juicy kiwis, crisp apples, vibrant oranges, fresh garlic, and sustainable greenhouse vegetables. Based in Tehran, we ensure quality from orchard to global markets.">
+    <meta name="summary" content="Leading Iranian exporter of fresh fruits and greenhouse products: Kiwi, Orange, Apple, Garlic. Global shipping from Tehran, Iran. Contact us for B2B partnerships.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Agrinhouse - Premium Iranian Fruit Exporter">
+    <meta property="og:description" content="Explore premium kiwi, apples, oranges, citrus, garlic, and greenhouse products from Agrinhouse, Iran's top fruit exporter. Quality assured for global markets.">
+    <meta property="og:image" content="https://agrinhouse.com/assets/icons/og-image.jpg">
+    <meta property="og:url" content="https://agrinhouse.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Agrinhouse - Premium Iranian Fruit Exporter">
+    <meta name="twitter:description" content="Iran's largest exporter of fresh fruits: kiwi, apples, oranges, and more. Sustainable greenhouse produce for international buyers.">
+    <meta name="twitter:image" content="https://agrinhouse.com/assets/icons/og-image.jpg">
+    
+    <link rel="canonical" href="https://agrinhouse.com/">
+    <link rel="icon" href="/assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    
+    <style>
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f9f9f9; }
+        header { background: linear-gradient(135deg, #0a0f24, #1e2a78); color: white; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 2rem; }
+        nav a { color: white; text-decoration: none; font-weight: 500; }
+        main { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        section { margin-bottom: 3rem; }
+        h1, h2, h3 { color: #1e2a78; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .product-card { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; }
+        footer { background: #0a0f24; color: white; text-align: center; padding: 2rem; }
+        @media (max-width: 768px) { nav ul { flex-direction: column; gap: 1rem; } .products-grid { grid-template-columns: 1fr; } }
+        /* Simple map placeholder - in real static, embed SVG or image */
+        #map { width: 100%; height: 400px; background: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #666; font-style: italic; }
+    </style>
+    
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Agrinhouse",
       "url": "https://agrinhouse.com",
-      "logo": "/assets/icons/logo.png",
-      "description": "Largest Iranian fruit exporter offering premium kiwi, apple, orange, citrus, and greenhouse products.",
+      "logo": "https://agrinhouse.com/assets/icons/logo.png",
+      "description": "Leading Iranian exporter of fresh fruits and greenhouse products, specializing in kiwi, oranges, apples, garlic, and sustainable produce.",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Vanak Square",
         "addressLocality": "Tehran",
-        "addressCountry": "Iran"
+        "addressCountry": "IR"
       },
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+989134290411",
+        "telephone": "+98 913 429 0411",
+        "contactType": "customer service",
         "email": "info@agrinhouse.com"
-      }
+      },
+      "sameAs": [
+        "https://www.facebook.com/agrinhouse/",
+        "https://www.instagram.com/agrinhouse/",
+        "https://www.linkedin.com/company/agrinhouse",
+        "https://twitter.com/agrinhouse"
+      ]
     }
-  </script>
-  <script>if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js");</script>
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Agrinhouse Homepage",
+      "url": "https://agrinhouse.com",
+      "description": "Discover Agrinhouse's premium fruit exports from Iran, including detailed product information and global shipping details.",
+      "inLanguage": "en",
+      "datePublished": "2023-01-01",
+      "dateModified": "2025-10-20"
+    }
+    </script>
 </head>
 <body>
-  <div id="mobile-header">
-    <a href="/" class="brand">Agrinhouse.com</a>
-    <button class="dashboard-btn" onclick="window.location.href='/dashboard'" aria-label="Open User Dashboard">Dashboard</button>
-  </div>
-  <div id="skeleton"><div id="skeleton-logo"></div></div>
-  <div id="header-container"></div>
-  <div id="icons-container"></div>
-  <div id="window-container"></div>
-  <div id="dock-container"></div>
-  <div id="sidebar-container"></div>
-  <div id="chat-icon-container"></div>
-  <div id="control-center-container">
-    <div id="control-center" class="control-center">
-      <div class="control-center-content">
-        <div class="control-center-search">
-          <span class="icon">🔍</span>
-          <input type="search" placeholder="Search For Agrinhouse.fruits, catalog, inventory..." id="searchInput">
-        </div>
-        <div class="control-button" data-modal="feedback">
-          <span class="icon">💬</span>
-          <span>Feedback</span>
-        </div>
-        <div class="control-button" data-modal="guide">
-          <span class="icon">🔠</span>
-          <span>Guide</span>
-        </div>
-        <div class="control-button" data-modal="currency">
-          <span class="icon">💱</span>
-          <span>Currency</span>
-        </div>
-        <div class="control-button" data-modal="catalog">
-          <span class="icon">📋</span>
-          <span>Catalog</span>
-        </div>
-        <div class="control-button" data-modal="inventory">
-          <span class="icon">📊</span>
-          <span>Inventory</span>
-        </div>
-        <div class="control-button" data-modal="order">
-          <span class="icon">🛒</span>
-          <span>Order</span>
-        </div>
-        <div class="control-button" data-modal="shipping">
-          <span class="icon">🚚</span>
-          <span>Shipping</span>
-        </div>
-        <div class="control-button" data-modal="contact">
-          <span class="icon">📞</span>
-          <span>Contact Us</span>
-        </div>
-        <div class="control-button" data-modal="about">
-          <span class="icon">ℹ️</span>
-          <span>About Us</span>
-        </div>
-        <div class="control-button" data-modal="calendar">
-          <span class="icon">📅</span>
-          <span>Calendar</span>
-        </div>
-        <div class="notification" data-modal="notification1">
-          <h3><span class="icon">🔔</span> Agrinhouse Update</h3>
-          <p><strong>greemhouse 154:</strong> Ready to export - New features</p>
-          <p class="subtext">Available now • 540 tons</p>
-        </div>
-        <div class="notification" data-modal="notification2">
-          <h3><span class="icon">ℹ️</span> Service Updates</h3>
-          <p><strong>Order System:</strong> Enhanced tracking</p>
-          <p class="subtext">Updated 1 hour ago</p>
-        </div>
-        <div class="gaza-support-box">
-          <div class="support-content">
-            <div class="title">🌱 Agrinhouse Supports Gaza’s Children</div>
-            <div class="description">Agrinhouse aids Gaza’s children with essential support and resources</div>
-          </div>
-          <button class="support-button" onclick="window.open('https://www.unrwa.org', '_blank')">Support Now</button>
-        </div>
-      </div>
-    </div>
-    <div id="mainModal" class="modal-overlay">
-      <div class="modal-container">
-        <div class="modal-header">
-          <h2 id="modalTitle">
-            <span class="modal-icon"></span>
-            <span>Loading...</span>
-          </h2>
-          <button class="modal-close-btn" aria-label="Close modal">×</button>
-        </div>
-        <div class="modal-content" id="modalContent">
-          <div class="modal-placeholder">
-            <div class="icon" id="modalPlaceholderIcon">⏳</div>
-            <h3 id="modalPlaceholderTitle">Loading Content</h3>
-            <p id="modalPlaceholderText">Please wait while we prepare the content for you...</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div id="map-container"></div>
-  <div class="tooltip" id="tooltip"></div>
-  <div id="loading">
-    <svg width="200" height="250" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
-      <path class="line ground" d="M135 172.5 H60" />
-      <path class="line wall-left" d="M60 172.5 Q52 170 50 165 V102.5" />
-      <path class="line roof" d="M50 102.5 L88 64.5 Q95 57.5 102 64.5 L140 102.5" />
-    </svg>
-  </div>
-  <div id="error-message">
-    <h3>Session Verification Failed</h3>
-    <p>We encountered an issue while verifying your session. Please try refreshing the page or contact our support team at <a href="mailto:support@agrinhouse.com" style="color: #4da8ff; text-decoration: none;">support@agrinhouse.com</a> if the issue persists.</p>
-    <button onclick="location.reload()">Refresh Page</button>
-  </div>
-  <div id="social-widget-container"></div>
-  <div id="currency-modal-container"></div>
-  <script defer src="/scripts.min.js"></script>
-  <script defer src="/components/control-center/control-center.js"></script>
-  <script defer>
-    if (typeof ControlCenter !== 'undefined') {
-      window.controlCenterInstance = new ControlCenter();
-    } else {
-      console.error('ControlCenter class not defined. Ensure control-center.js is loaded correctly.');
-    }
-  </script>
-  <script defer>
-    (function() {
-      // Load desktop header dynamically for desktop
-      if (window.innerWidth > 767) {
-        fetch('/components/header.html?v=' + Date.now())
-          .then(response => {
-            if (!response.ok) throw new Error('Failed to fetch header.html');
-            return response.text();
-          })
-          .then(html => {
-            document.getElementById('header-container').innerHTML = html;
-            const scripts = document.getElementById('header-container').querySelectorAll('script');
-            scripts.forEach(script => {
-              const newScript = document.createElement('script');
-              newScript.textContent = script.textContent;
-              document.body.appendChild(newScript);
-            });
-            console.log('[DEBUG] Desktop header loaded dynamically');
-          })
-          .catch(error => {
-            console.error('[ERROR] Header: Failed to load', error);
-            const errorMessage = document.getElementById('error-message');
-            errorMessage.style.display = 'block';
-            errorMessage.classList.add('show');
-            errorMessage.innerHTML = `
-              <h3>Header Load Failed</h3>
-              <p>Unable to load the header. Please try refreshing the page or contact support at <a href="mailto:support@agrinhouse.com" style="color: #4da8ff; text-decoration: none;">support@agrinhouse.com</a>.</p>
-              <button onclick="location.reload()">Refresh Page</button>
-            `;
-            console.log('[DEBUG] Error notification displayed for header');
-          });
-      }
-
-      // Load social widget dynamically
-      if (window.innerWidth > 767) {
-        fetch('/components/social-widget.html?v=' + Date.now())
-          .then(response => {
-            if (!response.ok) throw new Error('Failed to fetch social-widget.html');
-            return response.text();
-          })
-          .then(html => {
-            document.getElementById('social-widget-container').innerHTML = html;
-            const scripts = document.getElementById('social-widget-container').querySelectorAll('script');
-            scripts.forEach(script => {
-              const newScript = document.createElement('script');
-              newScript.textContent = script.textContent;
-              document.body.appendChild(newScript);
-            });
-            console.log('[DEBUG] Social widget loaded dynamically');
-          })
-          .catch(error => {
-            console.error('[ERROR] Social Widget: Failed to load', error);
-            const errorMessage = document.getElementById('error-message');
-            errorMessage.style.display = 'block';
-            errorMessage.classList.add('show');
-            console.log('[DEBUG] Error notification displayed');
-          });
-      }
-
-      // Update header visibility on resize
-      window.addEventListener('resize', () => {
-        if (window.innerWidth <= 767) {
-          document.getElementById('header-container').style.display = 'none';
-          document.getElementById('mobile-header').style.display = 'flex';
-        } else {
-          document.getElementById('mobile-header').style.display = 'none';
-          document.getElementById('header-container').style.display = 'block';
-          // Reload header if not already loaded
-          if (!document.getElementById('header-container').innerHTML) {
-            fetch('/components/header.html?v=' + Date.now())
-              .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch header.html');
-                return response.text();
-              })
-              .then(html => {
-                document.getElementById('header-container').innerHTML = html;
-                const scripts = document.getElementById('header-container').querySelectorAll('script');
-                scripts.forEach(script => {
-                  const newScript = document.createElement('script');
-                  newScript.textContent = script.textContent;
-                  document.body.appendChild(newScript);
-                });
-                console.log('[DEBUG] Desktop header reloaded on resize');
-              })
-              .catch(error => {
-                console.error('[ERROR] Header: Failed to load on resize', error);
-                const errorMessage = document.getElementById('error-message');
-                errorMessage.style.display = 'block';
-                errorMessage.classList.add('show');
-                errorMessage.innerHTML = `
-                  <h3>Header Load Failed</h3>
-                  <p>Unable to load the header. Please try refreshing the page or contact support at <a href="mailto:support@agrinhouse.com" style="color: #4da8ff; text-decoration: none;">support@agrinhouse.com</a>.</p>
-                  <button onclick="location.reload()">Refresh Page</button>
-                `;
-              });
-          }
-        }
-      });
-
-      document.addEventListener('DOMContentLoaded', () => {
-        if (window.innerWidth <= 767) {
-          document.getElementById('mobile-header').style.display = 'flex';
-          document.getElementById('header-container').style.display = 'none';
-        } else {
-          document.getElementById('mobile-header').style.display = 'none';
-          document.getElementById('header-container').style.display = 'block';
-        }
-      });
-    })();
-
-    function loadCurrencyModal() {
-      const container = document.getElementById('currency-modal-container');
-      container.innerHTML = '';
-      fetch('/components/currency.html?v=' + Date.now())
-        .then(response => {
-          if (!response.ok) throw new Error('Failed to fetch currency.html');
-          return response.text();
-        })
-        .then(html => {
-          container.innerHTML = html;
-          const modal = container.querySelector('#currencyModal');
-          if (modal) {
-            modal.style.display = 'block';
-            const scripts = container.querySelectorAll('script');
-            scripts.forEach(script => {
-              const newScript = document.createElement('script');
-              newScript.textContent = script.textContent;
-              document.body.appendChild(newScript);
-            });
-            const amountInput = modal.querySelector('#amountInput');
-            if (amountInput) amountInput.focus();
-            console.log('[DEBUG] Currency: Modal loaded dynamically');
-            container.addEventListener('click', (e) => {
-              if (e.target === modal) {
-                modal.style.display = 'none';
-                console.log('[DEBUG] Currency: Modal closed via backdrop click');
-              }
-            });
-            if (window.initializeCurrencyModal) {
-              window.initializeCurrencyModal();
-            }
-          } else {
-            throw new Error('Currency modal not found in loaded content');
-          }
-        })
-        .catch(error => {
-          console.error('[ERROR] Currency: Failed to load modal', error);
-          const errorMessage = document.getElementById('error-message');
-          errorMessage.style.display = 'block';
-          errorMessage.classList.add('show');
-          console.log('[DEBUG] Error notification displayed');
-        });
-    }
-  </script>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#export">Export</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <article id="home">
+            <header>
+                <h1>Agrinhouse: Iran's Premier Exporter of Fresh Fruits and Greenhouse Produce</h1>
+                <p>Agrinhouse stands at the forefront of Iran's agricultural export industry, delivering the finest quality fresh fruits and innovative greenhouse products to markets worldwide. From the lush orchards of Iran to your doorstep, we ensure every shipment embodies excellence, sustainability, and freshness.</p>
+            </header>
+            
+            <section id="about">
+                <h2>About Agrinhouse</h2>
+                <p>Based in the heart of Tehran at Vanak Square, Agrinhouse has built a reputation as a trusted partner for international buyers seeking premium Iranian produce. Our commitment to quality begins in the fields, where we cultivate and harvest under strict sustainable practices. With decades of experience in fruit export, we specialize in bridging Iranian growers with global demand, offering reliable supply chains for B2B partners.</p>
+                <p>In addition to our core fruit lines, our greenhouse operations produce year-round vegetables and specialty items, ensuring consistent availability regardless of season. We proudly support humanitarian causes, including aid for Gaza's children through partnerships with organizations like UNRWA.</p>
+            </section>
+            
+            <section id="products">
+                <h2>Our Premium Products</h2>
+                <p>Explore our diverse range of fresh fruits and greenhouse produce, each selected for superior taste, nutritional value, and export readiness. Our products are harvested at peak ripeness and packaged to maintain integrity during global transit.</p>
+                
+                <div class="products-grid">
+                    <div class="product-card">
+                        <img src="https://agrinhouse.com/assets/products/kiwi.jpg" alt="Fresh Iranian Kiwi Fruits">
+                        <h3>Kiwi</h3>
+                        <p>Juicy, nutrient-rich kiwis from Iran's fertile regions, packed with vitamin C and antioxidants. Ideal for health-conscious markets.</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://agrinhouse.com/assets/products/orange.jpg" alt="Vibrant Iranian Oranges">
+                        <h3>Oranges</h3>
+                        <p>Sweet and tangy oranges, exported in bulk to regions like Iraq and the Middle East. Perfect for juicing and fresh consumption.</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://agrinhouse.com/assets/products/apple.jpg" alt="Crisp Red and Yellow Apples from Iran">
+                        <h3>Apples</h3>
+                        <p>Crisp red and yellow apples from Samiran orchards, offering robust flavor and long shelf life for international distribution.</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://agrinhouse.com/assets/products/garlic.jpg" alt="Fresh Iranian Garlic Bulbs">
+                        <h3>Garlic</h3>
+                        <p>Robust, flavorful garlic bulbs, harvested fresh and cured for export. A staple in global cuisines with medicinal benefits.</p>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://agrinhouse.com/assets/products/greenhouse.jpg" alt="Sustainable Greenhouse Produce">
+                        <h3>Greenhouse Produce</h3>
+                        <p>Innovative greenhouse vegetables including bell peppers, nectarines, and peaches, grown year-round for consistent quality and supply.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="export">
+                <h2>Global Export Services</h2>
+                <p>Agrinhouse exports to key markets including Dubai, Iraq, and beyond, with advanced logistics for timely delivery. Our B2B platform offers catalog access, inventory tracking, and customized orders. Recent highlights include 460 tons of nectarines harvested in 42 days and premium bell peppers to Dubai.</p>
+                
+                <div id="map">
+                    <p>🌍 Iran: The Heart of Our Operations – Highlighting our export origins in Tehran and surrounding agricultural hubs.</p>
+                </div>
+                
+                <ul>
+                    <li><strong>Capacity:</strong> Up to 540 tons per season for select products.</li>
+                    <li><strong>Shipping:</strong> Sea, air, and land options with real-time tracking.</li>
+                    <li><strong>Certifications:</strong> Compliant with international standards for food safety and sustainability.</li>
+                </ul>
+            </section>
+            
+            <section id="contact">
+                <h2>Contact Us</h2>
+                <p>Ready to partner? Reach out for consultations, quotes, or to explore our full catalog.</p>
+                <ul>
+                    <li><strong>Phone:</strong> +98 913 429 0411</li>
+                    <li><strong>Email:</strong> info@agrinhouse.com</li>
+                    <li><strong>Address:</strong> Vanak Square, Tehran, Iran</li>
+                </ul>
+                <form style="max-width: 400px; margin-top: 1rem;">
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem;"><br>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem;"><br>
+                    <label for="message">Message:</label><br>
+                    <textarea id="message" name="message" rows="4" style="width: 100%; padding: 0.5rem;"></textarea><br>
+                    <button type="submit" style="background: #1e2a78; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 4px; cursor: pointer;">Send Inquiry</button>
+                </form>
+            </section>
+        </article>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Agrinhouse. All rights reserved. | <a href="#privacy" style="color: #ccc;">Privacy Policy</a> | <a href="#terms" style="color: #ccc;">Terms of Service</a></p>
+        <p>🌱 Supporting Gaza's Children – Learn more about our humanitarian initiatives.</p>
+    </footer>
 </body>
 </html>
