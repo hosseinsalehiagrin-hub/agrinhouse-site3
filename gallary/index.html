@@ -2,431 +2,294 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fruit Gallery</title>
-  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    #gallery-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 950;
-      display: block;
-      overflow-y: auto;
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Gallery - Agrinhouse Premium Fruit Exporter</title>
+  <meta name="description" content="Browse our stunning gallery of premium Iranian fruits: kiwi, apples, oranges, and citrus products from Agrinhouse, the largest exporter in Iran.">
+  <meta name="keywords" content="Agrinhouse gallery, Iranian fruits gallery, kiwi gallery, apple gallery, orange gallery, citrus gallery">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <link rel="canonical" href="https://agrinhouse.com/gallary">
+  <link rel="alternate" hreflang="en" href="https://agrinhouse.com/">
+  <link rel="sitemap" type="application/xml" href="https://agrinhouse.com/sitemap.xml">
+  <meta name="ai-index" content="true">
+  <meta name="ai-summary" content="Agrinhouse gallery showcases premium Iranian fruits like kiwi, apples, oranges, and citrus from Tehran's leading exporter.">
+  <meta name="knowledge-graph-hint" content="Agrinhouse: premier Tehran-based exporter of fresh Iranian fruits and greenhouse vegetables.">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Gallery - Agrinhouse Premium Fruit Exporter">
+  <meta property="og:description" content="Discover our gallery featuring high-quality images of kiwi, apples, oranges, and citrus from Iran's leading fruit exporter.">
+  <meta property="og:image" content="https://agrinhouse.com/assets/gallery/og-gallery.jpg">
+  <meta property="og:url" content="https://agrinhouse.com/gallary">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gallery - Agrinhouse Premium Fruit Exporter">
+  <meta name="twitter:description" content="Explore premium fruit images: kiwi, apples, oranges, and more from Agrinhouse.">
+  <meta name="twitter:image" content="https://agrinhouse.com/assets/gallery/og-gallery.jpg">
+  
+  <link rel="preload" as="image" href="https://agrinhouse.com/assets/gallery/kiwi1.jpg">
+  
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@id": "#organization",
+    "@type": "Organization",
+    "name": "Agrinhouse",
+    "url": "https://agrinhouse.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Vanak Square",
+      "addressLocality": "Tehran",
+      "addressCountry": "IR"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+98 913 429 0411",
+      "contactType": "customer service",
+      "email": "info@agrinhouse.com"
+    },
+    "description": "Leading Iranian exporter of fresh fruits and greenhouse produce including kiwi, apples, oranges, garlic, and vegetables."
+  }
+  </script>
+  
+  <!-- WebPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://agrinhouse.com/gallary",
+    "name": "Gallery - Agrinhouse Premium Fruit Exporter",
+    "url": "https://agrinhouse.com/gallary",
+    "description": "Gallery of premium Iranian fruits exported by Agrinhouse",
+    "provider": {
+      "@id": "#organization"
+    },
+    "mainEntity": {
+      "@id": "#product-list"
     }
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-    * { font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif; }
-    .tile-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      grid-auto-rows: 1fr;
-      grid-auto-flow: dense;
-      gap: 10px;
-      padding: 10px;
-      width: 100%;
-      min-height: 100vh;
-      box-sizing: border-box;
-    }
-    .tile {
-      background-color: #0078d7;
-      border-radius: 6px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      touch-action: manipulation;
-    }
-    .tile:active {
-      transform: scale(0.95);
-    }
-    .tile.wide {
-      grid-column: span 2;
-    }
-    .tile.large {
-      grid-column: span 2;
-      grid-row: span 2;
-    }
-    .tile-number {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 4px 8px;
-      border-radius: 4px;
-      z-index: 10;
-    }
-    .tile.animated img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-    }
-    .tile.animated.fade img:nth-child(1) { animation: fadeCycle 16s infinite; animation-delay: 0s; }
-    .tile.animated.fade img:nth-child(2) { animation: fadeCycle 16s infinite; animation-delay: 4s; }
-    .tile.animated.fade img:nth-child(3) { animation: fadeCycle 16s infinite; animation-delay: 8s; }
-    .tile.animated.fade img:nth-child(4) { animation: fadeCycle 16s infinite; animation-delay: 12s; }
-    .tile.animated.slide-up img:nth-child(1) { animation: slideUpCycle 14s infinite; animation-delay: 0s; }
-    .tile.animated.slide-up img:nth-child(2) { animation: slideUpCycle 14s infinite; animation-delay: 3.5s; }
-    .tile.animated.slide-up img:nth-child(3) { animation: slideUpCycle 14s infinite; animation-delay: 7s; }
-    .tile.animated.slide-up img:nth-child(4) { animation: slideUpCycle 14s infinite; animation-delay: 10.5s; }
-    .tile.animated.slide-left img:nth-child(1) { animation: slideLeftCycle 18s infinite; animation-delay: 0s; }
-    .tile.animated.slide-left img:nth-child(2) { animation: slideLeftCycle 18s infinite; animation-delay: 4.5s; }
-    .tile.animated.slide-left img:nth-child(3) { animation: slideLeftCycle 18s infinite; animation-delay: 9s; }
-    .tile.animated.slide-left img:nth-child(4) { animation: slideLeftCycle 18s infinite; animation-delay: 13.5s; }
-    .tile.animated.slide-top img:nth-child(1) { animation: slideTopCycle 15s infinite; animation-delay: 0s; }
-    .tile.animated.slide-top img:nth-child(2) { animation: slideTopCycle 15s infinite; animation-delay: 3.75s; }
-    .tile.animated.slide-top img:nth-child(3) { animation: slideTopCycle 15s infinite; animation-delay: 7.5s; }
-    .tile.animated.slide-top img:nth-child(4) { animation: slideTopCycle 15s infinite; animation-delay: 11.25s; }
-    .tile.animated.slide-top-1 img:nth-child(1) { animation: slideTopCycle 14s infinite; animation-delay: 0s; }
-    .tile.animated.slide-top-1 img:nth-child(2) { animation: slideTopCycle 14s infinite; animation-delay: 3.5s; }
-    .tile.animated.slide-top-1 img:nth-child(3) { animation: slideTopCycle 14s infinite; animation-delay: 7s; }
-    .tile.animated.slide-top-1 img:nth-child(4) { animation: slideTopCycle 14s infinite; animation-delay: 10.5s; }
-    .tile.animated.slide-top-2 img:nth-child(1) { animation: slideTopCycle 16s infinite; animation-delay: 0s; }
-    .tile.animated.slide-top-2 img:nth-child(2) { animation: slideTopCycle 16s infinite; animation-delay: 4s; }
-    .tile.animated.slide-top-2 img:nth-child(3) { animation: slideTopCycle 16s infinite; animation-delay: 8s; }
-    .tile.animated.slide-top-2 img:nth-child(4) { animation: slideTopCycle 16s infinite; animation-delay: 12s; }
-    .tile.animated.slide-top-3 img:nth-child(1) { animation: slideTopCycle 17s infinite; animation-delay: 0s; }
-    .tile.animated.slide-top-3 img:nth-child(2) { animation: slideTopCycle 17s infinite; animation-delay: 4.25s; }
-    .tile.animated.slide-top-3 img:nth-child(3) { animation: slideTopCycle 17s infinite; animation-delay: 8.5s; }
-    .tile.animated.slide-top-3 img:nth-child(4) { animation: slideTopCycle 17s infinite; animation-delay: 12.75s; }
-    @keyframes fadeCycle {
-      0% { opacity: 0; }
-      6.25% { opacity: 1; }
-      25% { opacity: 1; }
-      31.25% { opacity: 0; }
-      100% { opacity: 0; }
-    }
-    @keyframes slideUpCycle {
-      0% { opacity: 0; transform: translateY(10px); }
-      7.14% { opacity: 1; transform: translateY(0); }
-      25% { opacity: 1; transform: translateY(0); }
-      32.14% { opacity: 0; transform: translateY(-10px); }
-      100% { opacity: 0; transform: translateY(-10px); }
-    }
-    @keyframes slideLeftCycle {
-      0% { opacity: 0; transform: translateX(10px); }
-      5.56% { opacity: 1; transform: translateX(0); }
-      25% { opacity: 1; transform: translateX(0); }
-      30.56% { opacity: 0; transform: translateX(-10px); }
-      100% { opacity: 0; transform: translateX(-10px); }
-    }
-    @keyframes slideTopCycle {
-      0% { opacity: 0; transform: translateY(-10px); }
-      6.67% { opacity: 1; transform: translateY(0); }
-      25% { opacity: 1; transform: translateY(0); }
-      31.67% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 0; transform: translateY(10px); }
-    }
-    .shutter {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background: linear-gradient(180deg, #1a1a1a, #2c2c2c);
-      z-index: 1000;
-      transform: translateY(0);
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-    .shutter.open {
-      transform: translateY(100%);
-    }
-    .reveal-button {
-      background: linear-gradient(135deg, #0078d7, #005a9e);
-      color: white;
-      font-weight: 600;
-      font-size: 1.2rem;
-      padding: 0.75rem 2rem;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    .reveal-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-    }
-    .reveal-button:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-    .close-button {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      background: linear-gradient(135deg, #d32f2f, #b71c1c);
-      color: white;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      z-index: 1001;
-    }
-    .close-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-    }
-    .close-button:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-    @media (max-width: 768px) {
-      .tile-container {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        grid-auto-rows: 140px;
-        gap: 10px;
-        padding: 10px;
-        min-height: auto;
-        overflow-y: auto;
+  }
+  </script>
+  
+  <!-- Product List Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@id": "#product-list",
+    "@type": "ItemList",
+    "name": "Agrinhouse Premium Fruits Gallery",
+    "description": "Curated images of high-quality fruits from Agrinhouse's export collection",
+    "numberOfItems": 6,
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "#kiwi-green",
+          "@type": "Product",
+          "name": "Premium Green Kiwi",
+          "description": "Fresh green kiwi fruits ready for export from Iranian orchards.",
+          "image": "https://agrinhouse.com/assets/gallery/kiwi1.jpg",
+          "url": "https://agrinhouse.com/products/kiwi#green",
+          "sku": "AGRI-KIWI-GRN-001",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "10.00",
+              "priceCurrency": "USD",
+              "unitText": "kg"
+            },
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@id": "#apple-red",
+          "@type": "Product",
+          "name": "Red Delicious Apples",
+          "description": "Crisp red apples from Iranian orchards, hand-picked for export.",
+          "image": "https://agrinhouse.com/assets/gallery/apple1.jpg",
+          "url": "https://agrinhouse.com/products/apples#red-delicious",
+          "sku": "AGRI-APP-RD-001",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "8.00",
+              "priceCurrency": "USD",
+              "unitText": "kg"
+            },
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "#orange-juicy",
+          "@type": "Product",
+          "name": "Juicy Navel Oranges",
+          "description": "Sun-ripened navel oranges bursting with citrus flavor for global markets.",
+          "image": "https://agrinhouse.com/assets/gallery/orange1.jpg",
+          "url": "https://agrinhouse.com/products/oranges#navel",
+          "sku": "AGRI-ORG-NAV-001",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "12.00",
+              "priceCurrency": "USD",
+              "unitText": "kg"
+            },
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@id": "#citrus-mixed",
+          "@type": "Product",
+          "name": "Mixed Citrus Fruits",
+          "description": "Assortment of lemons, limes, and grapefruits from premium Iranian groves.",
+          "image": "https://agrinhouse.com/assets/gallery/citrus1.jpg",
+          "url": "https://agrinhouse.com/products/citrus#mixed",
+          "sku": "AGRI-CIT-MIX-001",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "15.00",
+              "priceCurrency": "USD",
+              "unitText": "kg"
+            },
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@id": "#kiwi-golden",
+          "@type": "Product",
+          "name": "Golden Kiwi Slices",
+          "description": "Sliced golden kiwis highlighting superior quality and freshness.",
+          "image": "https://agrinhouse.com/assets/gallery/kiwi2.jpg",
+          "url": "https://agrinhouse.com/products/kiwi#golden",
+          "sku": "AGRI-KIWI-GLD-001",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "11.00",
+              "priceCurrency": "USD",
+              "unitText": "kg"
+            },
+            "availability": "https://schema.org/InStock"
+          }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 6,
+        "item": {
+          "@id": "#greenhouse-prod",
+          "@type": "Product",
+          "name": "Greenhouse Vegetables",
+          "description": "Fresh greenhouse vegetables ensuring year-round quality production.",
+          "image": "https://agrinhouse.com/assets/gallery/greenhouse1.jpg",
+          "url": "https://agrinhouse.com/products/vegetables#greenhouse",
+          "sku": "AGRI-VEG-GHN-001",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "9.00",
+              "priceCurrency": "USD",
+              "unitText": "kg"
+            },
+            "availability": "https://schema.org/InStock"
+          }
+        }
       }
-      .tile.wide,
-      .tile.large {
-        grid-column: span 1;
-        grid-row: span 1;
+    ]
+  }
+  </script>
+  
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What fruits are featured in Agrinhouse's gallery?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our gallery highlights premium kiwi, apples, oranges, mixed citrus, and greenhouse vegetables exported from Iran."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Agrinhouse ensure fruit quality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We use state-of-the-art greenhouse facilities and hand-picking methods at our Tehran headquarters to deliver fresh, high-quality produce."
+        }
       }
-      .tile-number {
-        font-size: 12px;
-        padding: 3px 6px;
-      }
-      .tile.animated img {
-        animation: none;
-      }
-      .tile.animated img:nth-child(1) {
-        opacity: 1;
-      }
-      .reveal-button {
-        font-size: 1rem;
-        padding: 0.5rem 1.5rem;
-      }
-      .close-button {
-        font-size: 0.9rem;
-        padding: 0.4rem 0.8rem;
-        top: 12px;
-        right: 12px;
-      }
-    }
-    @media (max-width: 480px) {
-      .tile-container {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        grid-auto-rows: 120px;
-        gap: 8px;
-        padding: 8px;
-        min-height: auto;
-        overflow-y: auto;
-      }
-      .tile-number {
-        font-size: 10px;
-        padding: 2px 4px;
-      }
-      .reveal-button {
-        font-size: 0.9rem;
-        padding: 0.5rem 1.25rem;
-      }
-      .close-button {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.7rem;
-        top: 8px;
-        right: 8px;
-      }
-    }
-  </style>
+    ]
+  }
+  </script>
+  
+  <style>body{margin:0;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f8f9fa;color:#333;line-height:1.6}.gallery-container{max-width:1200px;margin:0 auto}.gallery-title{text-align:center;font-size:2.5em;margin-bottom:30px;color:#0a0f24}.gallery-summary{text-align:center;margin-bottom:30px;font-size:1.1em;color:#555}.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:40px}.gallery-item{background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,.1);transition:transform .3s ease}.gallery-item:hover{transform:translateY(-5px)}.gallery-item img{width:100%;height:250px;object-fit:cover}.gallery-item h3{margin:15px;font-size:1.3em;color:#1e2a78}.gallery-item p{margin:0 15px 15px;font-size:.9em;color:#666}@media (max-width:768px){.gallery-grid{grid-template-columns:1fr}}</style>
 </head>
 <body>
-  <div id="gallery-modal">
-    <div id="root"></div>
+  <div class="gallery-container">
+    <h1 class="gallery-title">Agrinhouse Fruit Gallery</h1>
+    <p class="gallery-summary">Agrinhouse, Iran's leading exporter of fresh fruits and greenhouse produce headquartered in Tehran, proudly showcases our premium kiwi, apples, oranges, and vegetables through this visual collection.</p>
+    <div class="gallery-grid" role="main" aria-label="Image gallery of premium fruits">
+      <div class="gallery-item">
+        <img src="/assets/gallery/kiwi1.jpg" alt="Premium green kiwi fruits from Agrinhouse, ready for export" width="800" height="600" loading="lazy">
+        <h3>Premium Green Kiwi</h3>
+        <p>Fresh and vibrant green kiwis harvested from our Iranian orchards.</p>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/apple1.jpg" alt="Crisp red delicious apples exported by Agrinhouse" width="800" height="600" loading="lazy">
+        <h3>Red Delicious Apples</h3>
+        <p>Hand-picked red apples known for their sweetness and crunch.</p>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/orange1.jpg" alt="Juicy navel oranges from Iranian citrus farms by Agrinhouse" width="800" height="600" loading="lazy">
+        <h3>Juicy Oranges</h3>
+        <p>Sun-ripened navel oranges bursting with citrus flavor.</p>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/citrus1.jpg" alt="Variety of citrus fruits including lemons and grapefruits from Agrinhouse" width="800" height="600" loading="lazy">
+        <h3>Mixed Citrus</h3>
+        <p>A colorful assortment of lemons, limes, and grapefruits.</p>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/kiwi2.jpg" alt="Sliced golden kiwi showcasing quality from Agrinhouse exporter" width="800" height="600" loading="lazy">
+        <h3>Golden Kiwi Slices</h3>
+        <p>Golden kiwis sliced to highlight their juicy interior.</p>
+      </div>
+      <div class="gallery-item">
+        <img src="/assets/gallery/greenhouse1.jpg" alt="Modern greenhouse facilities for fruit production at Agrinhouse" width="800" height="600" loading="lazy">
+        <h3>Greenhouse Production</h3>
+        <p>State-of-the-art greenhouses ensuring year-round quality.</p>
+      </div>
+    </div>
   </div>
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-
-    const ProductGallery = () => {
-      const imageSet = [
-        '/assets/images/piyal-pakira-VYKhztyEh44-unsplash.jpg',
-        '/assets/images/lucian-alexe-f35j-5N2N8s-unsplash.jpg',
-        '/assets/images/gibblesmash-asdf-ZoNHIYTwREY-unsplash.jpg',
-        '/assets/images/erwan-hesry-1q75BReKpms-unsplash.jpg'
-      ];
-
-      const products = [
-        { id: 1, size: 'large', animated: true, animationType: 'slide-top' },
-        { id: 2, size: 'standard', animated: true, animationType: 'slide-top-1' },
-        { id: 3, size: 'standard', animated: true, animationType: 'slide-top-2' },
-        { id: 4, size: 'wide', animated: true, animationType: 'fade' },
-        { id: 5, size: 'standard', animated: true, animationType: 'slide-up' },
-        { id: 6, size: 'standard', animated: true, animationType: 'slide-left' },
-        { id: 7, size: 'large', animated: true, animationType: 'fade' },
-        { id: 8, size: 'standard', animated: true, animationType: 'slide-up' },
-        { id: 9, size: 'standard', animated: true, animationType: 'slide-left' },
-        { id: 10, size: 'wide', animated: true, animationType: 'fade' },
-        { id: 11, size: 'standard', animated: true, animationType: 'slide-up' },
-        { id: 12, size: 'standard', animated: true, animationType: 'slide-left' },
-        { id: 13, size: 'large', animated: true, animationType: 'fade' },
-        { id: 14, size: 'standard', animated: true, animationType: 'slide-up' },
-        { id: 15, size: 'standard', animated: true, animationType: 'slide-left' },
-        { id: 16, size: 'wide', animated: true, animationType: 'fade' },
-        { id: 17, size: 'standard', animated: true, animationType: 'slide-up' },
-        { id: 18, size: 'standard', animated: true, animationType: 'slide-left' },
-        { id: 19, size: 'large', animated: true, animationType: 'fade' },
-        { id: 20, size: 'standard', animated: true, animationType: 'slide-up' },
-        { id: 21, size: 'standard', animated: true, animationType: 'slide-left' },
-        { id: 22, size: 'standard', animated: true, animationType: 'fade' },
-        { id: 23, size: 'wide', animated: true, animationType: 'slide-up' },
-        { id: 24, size: 'standard', animated: true, animationType: 'slide-left' },
-        { id: 25, size: 'standard', animated: true, animationType: 'slide-top-1' },
-      ];
-
-      const [tiles, setTiles] = useState(products);
-      const [isShutterOpen, setIsShutterOpen] = useState(false);
-
-      useEffect(() => {
-        console.log('[DEBUG] Gallery: React component mounted');
-        const calculatePlaceholders = () => {
-          const container = document.querySelector('.tile-container');
-          if (!container) {
-            console.warn('[DEBUG] Gallery: Tile container not found');
-            return;
-          }
-
-          const viewportWidth = window.innerWidth;
-          const minTileWidth = 200;
-          const padding = 10 * 2;
-          const gap = 10;
-          const columns = Math.floor((viewportWidth - padding) / (minTileWidth + gap));
-
-          let totalColumnUnits = 0;
-          products.forEach(product => {
-            totalColumnUnits += product.size === 'standard' ? 1 : 2;
-          });
-
-          const rows = Math.ceil(totalColumnUnits / columns);
-          const totalCells = rows * columns;
-          const cellsUsed = products.reduce((sum, product) => sum + (product.size === 'standard' ? 1 : 2), 0);
-          const placeholdersNeeded = totalCells - cellsUsed;
-
-          const placeholders = Array.from({ length: Math.max(0, placeholdersNeeded) }, (_, i) => ({
-            id: `placeholder-${i}`,
-            size: 'standard',
-            animated: true,
-            animationType: 'slide-top-3',
-          }));
-
-          setTiles([...products, ...placeholders]);
-          console.log('[DEBUG] Gallery: Tiles updated with placeholders', placeholders.length);
-        };
-
-        calculatePlaceholders();
-        window.addEventListener('resize', calculatePlaceholders);
-        return () => window.removeEventListener('resize', calculatePlaceholders);
-      }, []);
-
-      const [selectedImage, setSelectedImage] = useState(null);
-
-      const openLightbox = (src) => {
-        if (src) {
-          setSelectedImage(src);
-          console.log('[DEBUG] Gallery: Lightbox opened with image', src);
-        }
-      };
-
-      const closeLightbox = () => {
-        setSelectedImage(null);
-        console.log('[DEBUG] Gallery: Lightbox closed');
-      };
-
-      const handleReveal = () => {
-        setIsShutterOpen(true);
-        console.log('[DEBUG] Gallery: Shutter opened');
-      };
-
-      const handleClose = () => {
-        setIsShutterOpen(false);
-        setSelectedImage(null);
-        const container = document.getElementById('gallery-modal-container');
-        if (container) {
-          container.classList.remove('show');
-          container.innerHTML = '';
-          console.log('[DEBUG] Gallery: Modal closed via close button');
-        }
-      };
-
-      return (
-        <div className="w-full h-screen bg-gray-900 flex flex-col relative">
-          <div className={`shutter ${isShutterOpen ? 'open' : ''}`}>
-            {!isShutterOpen && (
-              <button className="reveal-button" onClick={handleReveal}>
-                Explore Gallery
-              </button>
-            )}
-          </div>
-          {isShutterOpen && (
-            <button className="close-button" onClick={handleClose}>
-              Close Gallery
-            </button>
-          )}
-          <div className="tile-container">
-            {tiles.map((tile) => (
-              <div
-                key={tile.id}
-                className={`tile ${tile.size} ${tile.animated ? `animated ${tile.animationType}` : ''}`}
-                onClick={() => openLightbox(imageSet[0])}
-              >
-                {tile.animated ? (
-                  <>
-                    {imageSet.map((src, index) => (
-                      <img key={index} src={src} alt={`Tile ${tile.id}`} />
-                    ))}
-                  </>
-                ) : (
-                  <img src={imageSet[0]} alt={`Tile ${tile.id}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                )}
-                <div className="tile-number">{tile.id}</div>
-              </div>
-            ))}
-          </div>
-          {selectedImage && (
-            <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" onClick={closeLightbox}>
-              <div className="relative w-full max-w-5xl p-4">
-                <img
-                  src={selectedImage}
-                  alt="Selected Product"
-                  className="w-full h-auto max-h-[90vh] object-contain rounded-xl"
-                />
-                <button
-                  className="absolute top-3 right-3 text-white bg-red-600 rounded-full w-8 h-8 flex items-center justify-center text-base font-medium"
-                  onClick={closeLightbox}
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      );
-    };
-
-    console.log('[DEBUG] Gallery: Rendering React component');
-    ReactDOM.render(<ProductGallery />, document.getElementById('root'));
-  </script>
+  <noscript>
+    <p style="margin:20px;padding:20px;background:#f0f0f0;border-radius:8px;font-family:sans-serif;">Agrinhouse, based at Vanak Square in Tehran, Iran, is the premier exporter of fresh fruits like kiwi, apples, oranges, garlic, and greenhouse vegetables. This gallery displays high-quality images of our premium products, emphasizing freshness and superior cultivation practices. Contact us at info@agrinhouse.com or +98 913 429 0411 for export inquiries.</p>
+  </noscript>
 </body>
 </html>
